@@ -1,0 +1,86 @@
+<form [formGroup]="resumeForm">
+    <ng-template matStepLabel>General Information</ng-template>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Full Name</mat-label>
+            <input placeholder="Ex. Juan Perez" matInput type="text"  name="fullname" formControlName="Fullname" [(ngModel)]="resume.fullname">
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Current Role</mat-label>
+            <input matInput placeholder="Ex. Software Developer" type="text"  name="currentRole" formControlName="CurrentRole" [(ngModel)]="resume.currentRole">
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Ex. juan.perez@unosquare.com" type="text"  name="email" formControlName="Email" [(ngModel)]="resume.email">
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Ex. Development and maintanance of API's with... " name="description" formControlName="Description" [(ngModel)]="resume.description"></textarea>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Technologies</mat-label>
+            <mat-chip-grid #chipGridTech name="technologies">
+                <mat-chip-row *ngFor="let tech of techs" (removed)="removeTech(tech)">
+                    {{ tech }}
+                    <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <input #techInput matInput type="text" placeholder="add new technology..."
+                [formControl]="techControl" [matAutocomplete]="autoComplete"
+                [matChipInputFor]="chipGridTech"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addTech($event)" />
+            <mat-autocomplete #autoComplete (optionSelected)="selectTech($event)">
+                <mat-option *ngFor="let tech of filteredTechs | async">
+                    {{ tech }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Methodologies</mat-label>
+            <mat-chip-grid #chipGridMeth  name="methodologies">
+                <mat-chip-row *ngFor="let meth of meths" [editable]="true"
+                    (edited)="editMeth(meth, $event)" (removed)="removeMeth(meth)">
+                    {{ meth }}
+                    <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <input matInput #methInput placeholder="add new methodology..."
+                [formControl]="methControl" [matChipInputFor]="chipGridMeth"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addMeth($event)">
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Certifications</mat-label>
+            <mat-chip-grid #chipGridCert  name="certifications">
+                <mat-chip-row *ngFor="let cert of certs" [editable]="true"
+                    (edited)="editCert(cert, $event)" (removed)="removeCert(cert)">
+                    {{ cert }}
+                    <button matChipRemove>
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <input matInput #certInput placeholder="add new certification..."
+                [formControl]="certControl" [matChipInputFor]="chipGridCert"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addCert($event)">
+        </mat-form-field>
+    </div>
+</form>

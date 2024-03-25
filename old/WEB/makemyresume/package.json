@@ -1,0 +1,33 @@
+{
+  "name": "make-my-resume-front",
+  "version": "1.0.0",
+  "description": "Make My Resume CoE Unosquare",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "source": "src/index.html",
+  "author": "Unosquare",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/msal-browser": "2.32.0",
+    "@azure/msal-react":"1.5.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "6.4.3"
+  },
+  "devDependencies": {
+    "parcel": "2.8.0",
+    "process": "0.11.10"
+  },
+  "browserslist": {
+    "production": [
+      "last 2 chrome version",
+      "last 2 firefox version"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version"
+    ]
+  }
+}
