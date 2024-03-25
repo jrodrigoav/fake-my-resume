@@ -21,17 +21,17 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: code/backend
+      working-directory: ./code/backend
     - name: Build
       run: dotnet build --no-restore
-      working-directory: code/backend
+      working-directory: ./code/backend
   frontend:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-node@v4.0.2
     - name: NPM Install
       run: npm install
-      working-directory: code/frontend/fakemyresume
+      working-directory: ./code/frontend/fakemyresume
     - name: NPM Build
       run: npm run build
-      working-directory: code/frontend/fakemyresume
+      working-directory: ./code/frontend/fakemyresume
