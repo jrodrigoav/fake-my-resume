@@ -13,22 +13,23 @@ import { TechTagsService } from '../../../services/tech-tags/tech-tags.service';
 import { ChipMultiselectComponent } from '../../../components/chip-multiselect/chip-multiselect.component';
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { WorkExperience } from '../../../DTOs/WorkExperienceDTO';
-import { DatePipe, NgIf } from '@angular/common';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-work-experience',
   standalone: true,
-  imports: [NgIf, AsyncPipe, DatePipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule, MatIconModule, ChipMultiselectComponent],
+  imports: [NgIf, AsyncPipe, DatePipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule, MatIconModule, DragDropModule, ChipMultiselectComponent],
   templateUrl: './work-experience.component.html',
   styleUrls: ['./work-experience.component.css']
 })
 export class WorkExperienceComponent implements OnInit {
   @Input() resume = new  ResumeDTO();
   @Input() workExperienceForm!: FormGroup;
-  columnsToDisplayExperience: any[] = ['companyName', 'role', 'description', 'projectName', 'technologies', 'from', 'to', 'actions'];
+  columnsToDisplayExperience: any[] = ['drag', 'companyName', 'role', 'description', 'projectName', 'technologies', 'from', 'to', 'actions'];
   filteredTechs: Observable<string[]> = new Observable<string[]>();
   inputChanges: Subject<string> = new Subject();
   technologiesControl!: FormArray;
+  dragDisabled: boolean = true;
   
   constructor(private cd: ChangeDetectorRef, private techTagsService: TechTagsService) {
     this.filteredTechs = this.inputChanges.pipe(
@@ -65,6 +66,12 @@ export class WorkExperienceComponent implements OnInit {
   removeRow(index: number) {
     this.resume.workExperience.splice(index, 1);
     this.resume.workExperience = this.resume.workExperience.slice();
+  }
+
+  onListDrop(event: CdkDragDrop<any>) {
+    const updatedArray = this.resume.workExperience.slice();
+    moveItemInArray(updatedArray, event.previousIndex, event.currentIndex);
+    this.resume.workExperience = updatedArray;
   }
 }
 

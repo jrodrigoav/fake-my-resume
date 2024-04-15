@@ -49,7 +49,17 @@
         </div>
     </div>
     <div *ngIf="resume.workExperience.length">
-        <table mat-table [dataSource]="resume.workExperience" class="mat-elevation-z8">
+        <table mat-table cdkDropList (cdkDropListDropped)="onListDrop($event)" [dataSource]="resume.workExperience" class="mat-elevation-z8 draggable-table">
+            <ng-container matColumnDef="drag">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon cdkDragHandle
+                  (touchstart)="dragDisabled = false" (touchend)="dragDisabled = true"
+                  (mousedown)="dragDisabled = false" (mouseup)="dragDisabled = true">
+                  drag_indicator
+                </mat-icon>
+              </td>
+            </ng-container>
             <ng-container matColumnDef="companyName">
               <th mat-header-cell *matHeaderCellDef> Company Name </th>
               <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
@@ -87,7 +97,7 @@
                   </td>
               </ng-container>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplayExperience"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnsToDisplayExperience;"></tr>
+            <tr mat-row cdkDrag [cdkDragData]="row" [cdkDragDisabled]="dragDisabled" (cdkDragReleased)="dragDisabled = true" *matRowDef="let row; columns: columnsToDisplayExperience;"></tr>
           </table>
     </div>
     <div hidden>
