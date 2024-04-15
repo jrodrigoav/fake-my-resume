@@ -7,100 +7,92 @@ using FakeMyResume.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace FakeMyResume.API.Controllers;
 
 [ApiController, Authorize, Route("api/resume")]
-public class ResumeController : ControllerBase
+public class ResumeController(IMapper mapper, IValidator<CreateResumeDTO> validator, IResumeService resumeService, IDocumentGenerationService documentGenerationService) : ControllerBase
 {
-    private readonly IMapper _mapper;
-    private readonly IValidator<CreateResumeDTO> _validator;
-    private readonly IResumeService _resumeService;
-
-    public ResumeController(IMapper mapper, IValidator<CreateResumeDTO> validator, IResumeService resumeService)
-    {
-        _mapper = mapper;
-        _validator = validator;
-        _resumeService = resumeService;
-    }
-
-    [HttpPost]
-    public IActionResult SaveResume(CreateResumeDTO resumeDTO)
-    {
-        var currentUser = this.User;
-        var accountId = currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (accountId == null)
-            return new UnauthorizedResult();
-
-        var validationResult = _validator.Validate(resumeDTO);
-        if (!validationResult.IsValid)
-        {
-            validationResult.AddToModelState(ModelState);
-            return BadRequest(ModelState);
-        }
-        var resume = _mapper.Map<Resume>(resumeDTO);
-
-        var newResume = _resumeService.SaveResume(resume, accountId);
-
-        return Created($"/api/resume/{newResume.Id}", newResume);
-    }
-
     [HttpGet]
     public IActionResult GetAccountResumes()
     {
-        var currentUser = this.User;
-        var accountId = currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+        var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (accountId == null)
             return new UnauthorizedResult();
 
-        var resumes = _resumeService.GetResumes(accountId);
+        var resumes = resumeService.GetResumes(accountId).Select(ResumeDTO.FromData);
         return Ok(resumes);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetResume(int id)
     {
-        var resume = _resumeService.GetResume(id);
+        var resume = resumeService.GetResume(id);
 
         if (resume == null)
         {
             return NotFound();
         }
 
-        return Ok(resume);
-
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult UpdateResume(int id, [FromBody] ResumeDTO resumeDTO)
-    {
-        var validationResult = _validator.Validate(resumeDTO);
-        if (!validationResult.IsValid)
-        {
-            validationResult.AddToModelState(ModelState);
-            return BadRequest(ModelState);
-        }
-        var resume = _mapper.Map<Resume>(resumeDTO);
-
-        var result = _resumeService.UpdateResume(id, resume);
-
-        return result == null? NotFound() : Ok(resume);
-
+        var result = ResumeDTO.FromData(resume);
+        return Ok(result);
     }
 
     [HttpGet("{id}/pdf")]
     public IActionResult GetResumePDF(int id)
     {
-        var resume = _resumeService.GetResumePDF(id);
+        try
+        {
+            var resume = resumeService.GetResume(id);
+            var resumeData = JsonSerializer.Deserialize<Resume>(resume.JsonData) ?? throw new NullReferenceException("Failed to deserialize resume data.");
+            return File(documentGenerationService.GenerateResumeInPDF(resumeData), "application/pdf");
+        } catch(InvalidOperationException)
+        {
+            return NotFound();
+        }
+    }
 
-        if (resume == null)
+    [HttpPost]
+    public IActionResult SaveResume(CreateResumeDTO resumeDTO)
+    {
+        var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (accountId == null)
+            return new UnauthorizedResult();
+
+        var validationResult = validator.Validate(resumeDTO);
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState);
+            return BadRequest(ModelState);
+        }
+        var resume = mapper.Map<Resume>(resumeDTO);
+
+        var newResume = resumeService.SaveResume(resume, accountId);
+        var result = ResumeDTO.FromData(newResume);
+        return Created($"/api/resume/{newResume.Id}", result);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateResume(int id, [FromBody] UpdateResumeDTO resumeDTO)
+    {
+        var validationResult = validator.Validate(resumeDTO);
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState);
+            return BadRequest(ModelState);
+        }
+        var resume = mapper.Map<Resume>(resumeDTO);
+
+        var updatedResume = resumeService.UpdateResume(id, resume);
+        if(updatedResume == null)
         {
             return NotFound();
         }
 
-        return File(resume, "application/pdf");
+        var result = ResumeDTO.FromData(updatedResume);
+        return Ok(result);
     }
 
     [HttpGet("dummy")]

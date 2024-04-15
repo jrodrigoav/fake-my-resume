@@ -1,4 +1,4 @@
-using FakeMyResume.Data.Models;
+﻿using FakeMyResume.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FakeMyResume.Data;
@@ -32,6 +32,12 @@ public class MakeMyResumeDb : DbContext
             entity.HasOne(r => r.User)
                 .WithMany(u => u.Resumes)
                 .HasForeignKey(r => r.AccountId);
+        });
+
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.HasIndex(e => e.Name)
+                .IsUnique();
         });
     }
 }

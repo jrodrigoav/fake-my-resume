@@ -1,4 +1,4 @@
-using iText.IO.Image;
+﻿using iText.IO.Image;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
@@ -42,13 +42,14 @@ public class DocumentGenerationService : IDocumentGenerationService
         #region Styles
 
         var font = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+        // var italicFont = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI Italic.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
         var boldFont = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI Bold.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
         var boldItalicFont = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI Bold Italic.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
 
         var textTitleStyle = new Style();
-        textTitleStyle.SetFont(font).SetBold().SetCharacterSpacing(2);
-        var paragraphTitleStyle = new Style();
-        paragraphTitleStyle.SetFont(font).SetFontSize(12).SetFontColor(ColorConstants.BLACK);
+        textTitleStyle.SetFont(boldFont).SetFontColor(ColorConstants.BLACK);
+        var sectionTitleStyle = new Style();
+        sectionTitleStyle.SetFont(boldFont).SetFontColor(ColorConstants.BLACK).SetFontSize(14);
         var textDescription = new Style();
         textDescription.SetFont(font).SetFontSize(10).SetFontColor(ColorConstants.DARK_GRAY).SetTextAlignment(TextAlignment.JUSTIFIED);
         #endregion
@@ -60,14 +61,14 @@ public class DocumentGenerationService : IDocumentGenerationService
         #endregion
 
         #region Profile
-        var profile = new Paragraph(new Text("PROFILE").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(50);
+        var profile = new Paragraph(new Text("PROFILE").AddStyle(sectionTitleStyle)).SetMarginTop(50);
         document.Add(profile);
         document.Add(addDescription(font, resume.Description));
         #endregion
 
         #region Technical Skills
 
-        var techenicalSkills = new Paragraph(new Text("TECHNICAL SKILLS").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(10);
+        var techenicalSkills = new Paragraph(new Text("TECHNICAL SKILLS").AddStyle(sectionTitleStyle)).SetMarginTop(10);
         document.Add(techenicalSkills);
 
         var tableTitleStyle = new Style();
@@ -96,7 +97,7 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         #region Work Experience
 
-        var workExperience = new Paragraph(new Text("WORK EXPERIENCE ").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(10);
+        var workExperience = new Paragraph(new Text("WORK EXPERIENCE").AddStyle(sectionTitleStyle)).SetMarginTop(10);
         document.Add(workExperience);
 
         resume.WorkExperience?.ForEach(we =>
@@ -108,7 +109,7 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         #region Education
 
-        var education = new Paragraph(new Text("EDUCATION").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(10);
+        var education = new Paragraph(new Text("EDUCATION").AddStyle(sectionTitleStyle)).SetMarginTop(10);
         document.Add(education);
 
         resume.Education?.ForEach(e =>
@@ -217,7 +218,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         string educationTitleStart = $"{education.UniversityName}. {education.State}, {education.Country}";
         string educationTitleEnd = $" {education.Degree} ({education.YearOfCompletion})";
         var pFullEducation = new Paragraph(new Text(educationTitleStart).AddStyle(textTitleStyle).SetFontColor(blueColor));
-        pFullEducation.Add(new Text(educationTitleEnd).SetFontColor(ColorConstants.BLACK).SetBold().SetCharacterSpacing(1).SetFontSize(11));
+        pFullEducation.Add(new Text(educationTitleEnd).SetFontColor(ColorConstants.BLACK).SetBold().SetCharacterSpacing(1));
         var titleEducation = new Cell(1, 0).Add(pFullEducation).SetBorder(Border.NO_BORDER);
 
         educationTable.AddCell(titleEducation);

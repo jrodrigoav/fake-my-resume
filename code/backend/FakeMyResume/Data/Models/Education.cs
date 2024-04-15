@@ -8,7 +8,7 @@ public class Education
 
     public string? UniversityName { get; set; }
 
-    public string? YearOfCompletion { get; set; }
+    public int? YearOfCompletion { get; set; }
 
     public string? Country { get; set; }
 
