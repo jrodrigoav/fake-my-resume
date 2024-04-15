@@ -106,12 +106,12 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         #region Education
 
-        var education = new Paragraph(new Text("EDUCATION ").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(10);
+        var education = new Paragraph(new Text("EDUCATION").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(10);
         document.Add(education);
 
         resume.Education?.ForEach(e =>
         {
-            document.Add(addEducationTable(textDescription, font, e));
+            document.Add(addEducationTable(textTitleStyle, e));
         });
 
         #endregion
@@ -201,21 +201,18 @@ public class DocumentGenerationService : IDocumentGenerationService
         return workExperienceTable;
     }
 
-    private Table addEducationTable(Style textDescription, PdfFont font, Education education)
+    private Table addEducationTable(Style textTitleStyle, Education education)
     {
-        float[] educationWidth = { 800 };
-        Table educationTable = new Table(educationWidth);
+        float[] educationWidth = [800];
+        var educationTable = new Table(educationWidth);
 
-        string fullEducationTitle = $"{education.UniversityName}, {education.State}, {education.Country} - {education.Major}";
-        string fullSubtitle = $"{education.Degree} - {education.YearOfCompletion}";
-        var pFullEducation = new Paragraph(new Text(fullEducationTitle).SetFont(font).SetBold().SetCharacterSpacing(1).SetFontSize(11)).SetFontColor(blueColor);
-        var pFullSubtitle = new Paragraph(new Text(fullSubtitle).SetFont(font).SetBold().SetCharacterSpacing(1).SetFontSize(8).SetFontColor(ColorConstants.BLACK).AddStyle(textDescription));
-
-        Cell titleEducation = new Cell(1, 0).Add(pFullEducation).SetBorder(Border.NO_BORDER);
-        Cell twoCellEducation = new Cell(1, 0).Add(pFullSubtitle).SetBorder(Border.NO_BORDER);
+        string educationTitleStart = $"{education.UniversityName}. {education.State}, {education.Country}";
+        string educationTitleEnd = $" {education.Degree} ({education.YearOfCompletion})";
+        var pFullEducation = new Paragraph(new Text(educationTitleStart).AddStyle(textTitleStyle).SetFontColor(blueColor));
+        pFullEducation.Add(new Text(educationTitleEnd).SetFontColor(ColorConstants.BLACK).SetBold().SetCharacterSpacing(1).SetFontSize(11));
+        var titleEducation = new Cell(1, 0).Add(pFullEducation).SetBorder(Border.NO_BORDER);
 
         educationTable.AddCell(titleEducation);
-        educationTable.AddCell(twoCellEducation);
         educationTable.SetMargin(10);
 
         return educationTable;
