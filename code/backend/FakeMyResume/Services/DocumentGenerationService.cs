@@ -19,8 +19,8 @@ namespace FakeMyResume.Services;
 public class DocumentGenerationService : IDocumentGenerationService
 {
     private readonly string _assetsPath;
-    private Color greyColor = new DeviceCmyk(3, 4, 4, 4);
-    private Color blueColor = new DeviceCmyk(99, 79, 0, 0);
+    private readonly Color greyColor = new DeviceCmyk(0, 0, 0, 5);
+    private readonly Color blueColor = new DeviceCmyk(99, 79, 0, 0);
 
     public DocumentGenerationService()
     {
@@ -41,8 +41,8 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         #region Styles
 
-        string fontPath = System.IO.Path.Combine(_assetsPath, "Segoe UI.ttf");
-        var font = PdfFontFactory.CreateFont(fontPath, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED); 
+        var font = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+        var boldFont = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI Bold.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
 
         var textTitleStyle = new Style();
         textTitleStyle.SetFont(font).SetBold().SetCharacterSpacing(2);
@@ -55,11 +55,11 @@ public class DocumentGenerationService : IDocumentGenerationService
         #region Header
         addRectangleHeader(pdfDocument, page);
         document.Add(addImage());
-        addTextHeader(page, font, resume.FullName, resume.Email, resume.CurrentRole);
+        addTextHeader(page, boldFont, resume.FullName, resume.CurrentRole);
         #endregion
 
         #region Profile
-        var profile = new Paragraph(new Text("PROFILE").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(60);
+        var profile = new Paragraph(new Text("PROFILE").AddStyle(textTitleStyle).AddStyle(paragraphTitleStyle)).SetMarginTop(50);
         document.Add(profile);
         document.Add(addDescription(font, resume.Description));
         #endregion
@@ -131,32 +131,30 @@ public class DocumentGenerationService : IDocumentGenerationService
     private void addRectangleHeader(PdfDocument pdfDocument, PdfPage page)
     {
         PdfCanvas canvasHeaderRectangle = new PdfCanvas(pdfDocument.GetFirstPage());
-        Rectangle rectangle = new Rectangle(0, page.GetPageSize().GetTop() - 90, page.GetPageSize().GetWidth(), 90);
+        var rectangle = new Rectangle(0, page.GetPageSize().GetTop() - 80, page.GetPageSize().GetWidth(), 80);
         canvasHeaderRectangle.Rectangle(rectangle)
              .SetFillColor(greyColor)
              .Fill();
     }
 
-    private void addTextHeader(PdfPage page, PdfFont font, string resumeFullName, string resumeEmail, string resumeCurrentRole)
+    private void addTextHeader(PdfPage page, PdfFont font, string resumeFullName, string resumeCurrentRole)
     {
-        Rectangle rectangle = new Rectangle(35, page.GetPageSize().GetTop(), 740, 150);
-        Canvas canvasTextRectangle = new Canvas(page, rectangle);
-        Text fullName = new Text(resumeFullName).SetFont(font).SetBold().SetCharacterSpacing(2);
-        Text email = new Text(resumeEmail).SetFont(font);
-        Text currentRole = new Text(resumeCurrentRole).SetFont(font);
+        var rectangle = new Rectangle(35, page.GetPageSize().GetTop(), 740, 150);
+        var canvasTextRectangle = new Canvas(page, rectangle);
+        var fullName = new Text(resumeFullName.ToUpperInvariant()).SetFont(font);
+        var currentRole = new Text(resumeCurrentRole).SetFont(font);
 
-        canvasTextRectangle.ShowTextAligned(new Paragraph(fullName).SetFontSize(25).SetFontColor(ColorConstants.BLACK), 35, 800, TextAlignment.LEFT)
-            .ShowTextAligned(new Paragraph((currentRole).SetBold().SetCharacterSpacing(1)).SetFontSize(10).SetFontColor(blueColor), 35, 785, TextAlignment.LEFT)
-            .ShowTextAligned(new Paragraph(email).SetFontSize(10).SetFontColor(ColorConstants.DARK_GRAY), 35, 768, TextAlignment.LEFT)
+        canvasTextRectangle.ShowTextAligned(new Paragraph(fullName).SetFontSize(36).SetFontColor(ColorConstants.BLACK), 35, 790, TextAlignment.LEFT)
+            .ShowTextAligned(new Paragraph(currentRole.SetCharacterSpacing(1)).SetFontSize(10).SetFontColor(ColorConstants.BLACK), 35, 775, TextAlignment.LEFT)
             .Close();
     }
 
     private Image addImage()
     {
-        string imagePath = System.IO.Path.Combine(_assetsPath, "logo_unosquare.PNG");
-        ImageData logo = ImageDataFactory.Create(imagePath);
+        string imagePath = System.IO.Path.Combine(_assetsPath, "logo_unosquare_small.PNG");
+        var logo = ImageDataFactory.Create(imagePath);
 
-        Image image = new Image(logo).Scale(0.4f, 0.4f).SetFixedPosition(1, 440, 760);
+        var image = new Image(logo).ScaleToFit(64, 64).SetFixedPosition(1, 500, 770);
         return image;
     }
 

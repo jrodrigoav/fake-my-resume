@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Assets\logo_unosquare.png" />
+    <None Remove="Assets\logo_unosquare_small.png" />
     <None Remove="Assets\Segoe UI Bold Italic.ttf" />
     <None Remove="Assets\Segoe UI Bold.ttf" />
     <None Remove="Assets\Segoe UI Italic.ttf" />
@@ -40,6 +41,9 @@
 
   <ItemGroup>
     <Content Include="Assets\logo_unosquare.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\logo_unosquare_small.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Segoe UI Bold Italic.ttf">
