@@ -29,6 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
             name: AllowLocalhostCORSPolicy,
             policy =>
             {
+                policy.WithHeaders("Authorization", "Accept", "Referer", "User-Agent", "Content-Type");
                 policy.WithOrigins("http://localhost:4200");
             });
     });
