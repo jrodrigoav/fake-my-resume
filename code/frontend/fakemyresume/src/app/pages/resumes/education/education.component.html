@@ -67,11 +67,11 @@
                 <th mat-header-cell *matHeaderCellDef> State </th>
                 <td mat-cell *matCellDef="let element"> {{ element.state }}</td>
             </ng-container>
-            <ng-container matColumnDef="remove">
+            <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element; let i = index">
-                    <button mat-raised-button (click)="removeEducation(i)">
-                        Remove
+                    <button mat-icon-button (click)="removeEducation(i)">
+                        <mat-icon>delete</mat-icon>
                     </button>
                 </td>
             </ng-container>
