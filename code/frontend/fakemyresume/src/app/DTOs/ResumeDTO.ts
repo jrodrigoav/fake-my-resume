@@ -2,8 +2,9 @@ import { Education } from "./EducationDTO";
 import { WorkExperience } from "./WorkExperienceDTO";
 
 export class ResumeDTO {
-    accountId!: string;
-    fullname!: string;
+    id?: number;
+    accountId?: string;
+    fullName!: string;
     currentRole!: string;
     email!: string;
     description!: string;
@@ -14,13 +15,13 @@ export class ResumeDTO {
     education!: Education[];
 
     constructor() {
-        this.fullname = "";
+        this.fullName = "";
         this.currentRole = "";
         this.email = "";
         this.description = "";
         this.technologies = [];
-        this.methodologies = [""];
-        this.certifications = [""];
+        this.methodologies = [];
+        this.certifications = [];
         this.workExperience = [];
         this.education = [];
     }
