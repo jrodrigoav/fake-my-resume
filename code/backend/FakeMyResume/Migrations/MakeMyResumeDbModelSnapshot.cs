@@ -51,26 +51,6 @@ namespace FakeMyResume.Migrations
                     b.ToTable("DataResume", (string)null);
                 });
 
-            modelBuilder.Entity("FakeMyResume.Data.Models.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Tag");
-                });
-
             modelBuilder.Entity("FakeMyResume.Data.Models.User", b =>
                 {
                     b.Property<string>("Id")

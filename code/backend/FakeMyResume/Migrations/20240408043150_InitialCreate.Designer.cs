@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeMyResume.Migrations
 {
     [DbContext(typeof(MakeMyResumeDb))]
-    [Migration("20240328174630_InitialCreate")]
+    [Migration("20240408043150_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,7 +35,7 @@ namespace FakeMyResume.Migrations
 
                     b.Property<string>("AccountId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -49,23 +49,42 @@ namespace FakeMyResume.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId");
+
                     b.ToTable("DataResume", (string)null);
                 });
 
-            modelBuilder.Entity("FakeMyResume.Data.Models.Tag", b =>
+            modelBuilder.Entity("FakeMyResume.Data.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("LastActivity")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("TagName")
+                    b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tag");
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("FakeMyResume.Data.Models.DataResume", b =>
+                {
+                    b.HasOne("FakeMyResume.Data.Models.User", "User")
+                        .WithMany("Resumes")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FakeMyResume.Data.Models.User", b =>
+                {
+                    b.Navigation("Resumes");
                 });
 #pragma warning restore 612, 618
         }
