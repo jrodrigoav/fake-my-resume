@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,19 +8,18 @@ import { MatTableModule } from '@angular/material/table';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { WorkExperience } from '../../../DTOs/WorkExperienceDTO';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-work-experience',
   standalone: true,
-  imports: [DatePipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule],
+  imports: [NgIf, DatePipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule],
   templateUrl: './work-experience.component.html',
   styleUrls: ['./work-experience.component.css']
 })
-export class WorkExperienceComponent implements OnInit {
+export class WorkExperienceComponent {
   @Input() resume = new  ResumeDTO();
   @Input() workExperienceForm!: FormGroup;
-  dataSourceExperience: WorkExperience[] = [];
   columnsToDisplayExperience: any[] = [
     'companyName',
     'role',
@@ -30,19 +29,14 @@ export class WorkExperienceComponent implements OnInit {
     'to',
   ];
  
-  constructor(private cd: ChangeDetectorRef, private utilsService : UtilsService){
-  }
+  constructor(private cd: ChangeDetectorRef, private utilsService : UtilsService) {
 
-  ngOnInit(): void {
-
-    this.resume.workExperience = [];
   }
 
   addExperience(){
     if (this.workExperienceForm.valid) {
       let experience: WorkExperience = this.utilsService.mapFormGroupToModel(this.workExperienceForm);
-      this.dataSourceExperience.push(experience);
-      this.resume.workExperience = this.dataSourceExperience;
+      this.resume.workExperience = [...this.resume.workExperience, experience];
       this.utilsService.clearFormGroupValues(this.workExperienceForm);
     }
   }

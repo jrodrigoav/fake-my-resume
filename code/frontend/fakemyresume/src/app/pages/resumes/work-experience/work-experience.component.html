@@ -46,7 +46,7 @@
             <button mat-raised-button (click)="addExperience()">Add</button>
         </div>
     </div>
-    <div>
+    <div *ngIf="resume.workExperience.length">
         <table mat-table [dataSource]="resume.workExperience" class="mat-elevation-z8">
             <ng-container matColumnDef="companyName">
               <th mat-header-cell *matHeaderCellDef> Company Name </th>

@@ -49,7 +49,9 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.techs = this.resume.technologies;
+    this.meths = this.resume.methodologies;
+    this.certs = this.resume.certifications;
   }
 
   selectTech(event: MatAutocompleteSelectedEvent): void {

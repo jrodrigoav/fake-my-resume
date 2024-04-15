@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -8,6 +8,7 @@ import { PersonalInformationComponent } from './personal-information/personal-in
 import { WorkExperienceComponent } from './work-experience/work-experience.component';
 import { MakeMyResumeService } from '../../services/make-my-resume/make-my-resume.service';
 import { ResumeDTO } from '../../DTOs/ResumeDTO';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -18,11 +19,13 @@ import { ResumeDTO } from '../../DTOs/ResumeDTO';
   styleUrls: ['./resumes.component.css']
 })
 
-export class ResumesComponent {
+export class ResumesComponent implements OnDestroy {
   resume: ResumeDTO = new ResumeDTO;
   resumeForm: FormGroup; 
   workExperienceForm: FormGroup;
   educationForm: FormGroup;
+  onDestroy$: Subject<void> = new Subject();
+  loaded: boolean = false;
 
   constructor(private resumeService: MakeMyResumeService, private fb: FormBuilder) {
     this.resumeForm = this.fb.group({
@@ -30,9 +33,6 @@ export class ResumesComponent {
       currentRole: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       description: new FormControl('', [Validators.required]),
-      technologies: new FormControl(''),
-      methodologies: new FormControl(),
-      certifications: new FormControl()
     });
 
     this.workExperienceForm = this.fb.group({
@@ -50,10 +50,52 @@ export class ResumesComponent {
       universityName: new FormControl('', [Validators.required]),
       yearOfCompletion: new FormControl('', [Validators.required])
     });
+
+    this.resumeService.getResumes().pipe(takeUntil(this.onDestroy$)).subscribe(resumes => {
+      if(resumes.length) {
+        const resume = resumes[0];
+        this.setResume(resume);
+      }
+      this.loaded = true;
+    });
+  }
+
+  ngOnDestroy() {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   submit(): void {
-    this.resumeService.saveResume(this.resume).subscribe(response => {
+    this.resume = {
+      ...this.resume,
+      ...this.resumeForm.getRawValue(),
+    }
+    this.resumeService.saveResume(this.resume).subscribe(resume => {
+      this.setResume(resume);
     });
+  }
+
+  update(): void {
+    if(!this.resume.id) return;
+    this.resumeService.updateResume(this.resume.id, this.resume).subscribe(response => {
+      // TODO: Handle update
+    });
+  }
+
+  download() {
+    if(!this.resume.id) return;
+    this.resumeService.getResumePdF(this.resume.id).subscribe(response => {
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(response);
+      downloadLink.setAttribute('download', `${this.resume.fullName} Resume.pdf`);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
+  }
+
+  private setResume(resume: ResumeDTO) {
+    this.resumeForm.patchValue(resume);
+    this.resume = resume;
   }
 }

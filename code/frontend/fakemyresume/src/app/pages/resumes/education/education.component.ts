@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,28 +16,25 @@ import { Education } from '../../../DTOs/EducationDTO';
   templateUrl: './education.component.html',
   styleUrls: ['./education.component.css']
 })
-export class EducationComponent implements OnInit {
+export class EducationComponent {
   @Input() resume!: ResumeDTO;
   @Input() educationForm!: FormGroup;
 
   displayedColumnsEducation: string[] = ['degree', 'major', 'universityName', 'yearOfCompletion', 'remove'];
-  dataSourceEducation: Education[] = [];
 
-  constructor(private utilsService: UtilsService){}
-  ngOnInit(): void {
-    this.resume.education = [];
+  constructor(private utilsService: UtilsService) {
+    
   }
 
 
   removeEducation(element: any) {
-    this.dataSourceEducation.splice(element, 1);
+    this.resume.education.splice(element, 1);
   }
 
   addEducation() {
     if (this.educationForm.valid) {
       let education: Education = this.utilsService.mapFormGroupToModel(this.educationForm);
-      this.dataSourceEducation.push(education);
-      this.resume.education = this.dataSourceEducation;
+      this.resume.education.push(education);
       this.clearFormGroupValues();
     }
   }
