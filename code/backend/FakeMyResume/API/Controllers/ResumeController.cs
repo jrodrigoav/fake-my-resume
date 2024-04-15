@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FakeMyResume.Data.Models;
@@ -62,7 +62,6 @@ public class ResumeController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetResume(int id)
     {
-
         var resume = _resumeService.GetResume(id);
 
         if (resume == null)
@@ -91,7 +90,7 @@ public class ResumeController : ControllerBase
 
     }
 
-    [HttpGet("get-resume-PDF/{id}")]
+    [HttpGet("{id}/pdf")]
     public IActionResult GetResumePDF(int id)
     {
         var resume = _resumeService.GetResumePDF(id);
