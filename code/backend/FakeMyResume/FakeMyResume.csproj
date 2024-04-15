@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\logo_unosquare.png" />
+    <None Remove="Assets\Segoe UI Bold Italic.ttf" />
+    <None Remove="Assets\Segoe UI Bold.ttf" />
+    <None Remove="Assets\Segoe UI Italic.ttf" />
+    <None Remove="Assets\Segoe UI.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
@@ -32,6 +40,15 @@
 
   <ItemGroup>
     <Content Include="Assets\logo_unosquare.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Segoe UI Bold Italic.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Segoe UI Bold.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Segoe UI Italic.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Segoe UI.ttf">
