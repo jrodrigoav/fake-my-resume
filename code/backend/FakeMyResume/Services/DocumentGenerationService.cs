@@ -154,7 +154,7 @@ public class DocumentGenerationService : IDocumentGenerationService
 
     private Image addImage()
     {
-        string imagePath = System.IO.Path.Combine(_assetsPath, "logo_unosquare_small.PNG");
+        string imagePath = System.IO.Path.Combine(_assetsPath, "logo_unosquare_small.png");
         var logo = ImageDataFactory.Create(imagePath);
 
         var image = new Image(logo).ScaleToFit(64, 64).SetFixedPosition(1, 500, 770);
