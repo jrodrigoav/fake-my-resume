@@ -17,11 +17,19 @@ export class MakeMyResumeService {
     return `${this.baseUrl}/${resource}`;
   }
 
+  public getResumes() {
+    return this.httpClient.get<ResumeDTO[]>(this.resourceUrl(''));
+  }
+
   public getResume(id: string) {
     return this.httpClient.get(this.resourceUrl(id));
   }
 
   public saveResume(resume: ResumeDTO) {
-    return this.httpClient.post(this.resourceUrl(''), resume);
+    return this.httpClient.post<ResumeDTO>(this.resourceUrl(''), resume);
+  }
+
+  public getResumePdF(resumeId: number) {
+    return this.httpClient.get<Blob>(this.resourceUrl(`${resumeId}/pdf`), { responseType: 'blob' as 'json' });
   }
 }
