@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { AsyncPipe, NgFor } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, debounceTime, map, startWith } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -42,6 +42,7 @@ export class PersonalInformationComponent implements OnInit {
 
   constructor(private techTagsService: TechTagsService) {
     this.filteredTechs = this.techControl.valueChanges.pipe(
+      debounceTime(300),
       startWith(null),
       map((tech: string | null) => (tech ? this._filterTech(tech) : this.allTechs.slice())),
     );
