@@ -26,13 +26,13 @@ export class ResumesComponent {
 
   constructor(private resumeService: MakeMyResumeService, private fb: FormBuilder) {
     this.resumeForm = this.fb.group({
-      Fullname: new FormControl('', [Validators.required]),
-      CurrentRole: new FormControl('', [Validators.required]),
-      Email: new FormControl('', [Validators.required, Validators.email]),
-      Description: new FormControl('', [Validators.required]),
-      Technologies: new FormControl(''),
-      Methodologies: new FormControl(),
-      Certifications: new FormControl()
+      fullName: new FormControl('', [Validators.required]),
+      currentRole: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      description: new FormControl('', [Validators.required]),
+      technologies: new FormControl(''),
+      methodologies: new FormControl(),
+      certifications: new FormControl()
     });
 
     this.workExperienceForm = this.fb.group({
@@ -45,10 +45,10 @@ export class ResumesComponent {
     });
 
     this.educationForm = this.fb.group({
-      Degree: new FormControl('', [Validators.required]),
-      Major: new FormControl('', [Validators.required]),
-      UniversityName: new FormControl('', [Validators.required]),
-      YearOfCompletion: new FormControl('', [Validators.required])
+      degree: new FormControl('', [Validators.required]),
+      major: new FormControl('', [Validators.required]),
+      universityName: new FormControl('', [Validators.required]),
+      yearOfCompletion: new FormControl('', [Validators.required])
     });
   }
 
