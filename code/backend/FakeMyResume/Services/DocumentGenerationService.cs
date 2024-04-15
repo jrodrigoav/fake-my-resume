@@ -74,21 +74,17 @@ public class DocumentGenerationService : IDocumentGenerationService
         var tableTextStyle = new Style();
         tableTextStyle.SetFont(font).SetFontColor(ColorConstants.BLACK).SetFontSize(9).SetBold().SetCharacterSpacing(1);
 
-        float[] columnWidths = new float[] { 230, 120, 150 };
-        Table table = new Table(columnWidths);
+        var columnWidths = new float[] { 200, 300 };
+        var table = new Table(columnWidths);
 
         var techologiesCell = new Cell(1, 0).AddStyle(tableTitleStyle).Add(new Paragraph(new Text("TECHNOLOGIES:").AddStyle(tableTextStyle)));
-        var methodologiesCell = new Cell(1, 1).AddStyle(tableTitleStyle).Add(new Paragraph(new Text("METODOLOGIES:").AddStyle(tableTextStyle)));
         var certificationsCell = new Cell(1, 1).AddStyle(tableTitleStyle).Add(new Paragraph(new Text("CERTIFICATIONS:").AddStyle(tableTextStyle)));
 
         // header table
         table.AddHeaderCell(techologiesCell);
-        table.AddHeaderCell(methodologiesCell);
         table.AddHeaderCell(certificationsCell);
         /// technologies table
         table.AddCell(addNestedTableWithTwoColumns(resume?.Technologies, font));
-        /// methodologies table
-        table.AddCell(addNestedTable(resume?.Methodologies, font));
         /// certifications table
         table.AddCell(addNestedTable(resume?.Certifications, font));
         table.SetMargin(10);

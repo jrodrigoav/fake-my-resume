@@ -24,14 +24,12 @@ export class PersonalInformationComponent implements OnInit {
   @Input() resume!: ResumeDTO;
   @Input() resumeForm!: FormGroup; 
   techControl = new FormControl();
-  methControl = new FormControl();
   certControl = new FormControl();
 
   filteredTechs!: Observable<string[]>;
 
   allTechs: string[] = [];
   techs: string[] = [];
-  meths: string[] = [];
   certs: string[] = [];
 
   @ViewChild('techInput')
@@ -50,7 +48,6 @@ export class PersonalInformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.techs = this.resume.technologies;
-    this.meths = this.resume.methodologies;
     this.certs = this.resume.certifications;
   }
 
@@ -76,13 +73,6 @@ export class PersonalInformationComponent implements OnInit {
     return tags;
   }
 
-  addMeth(event: MatChipInputEvent): void {
-    this.resume.methodologies = this.resume.methodologies.filter(p => p !== '');
-    this.manageItem(event.value, this.meths, this.resume.methodologies, 'add');
-    event.chipInput!.clear();
-    this.techControl.setValue(null);
-  }
-
   addCert(event: MatChipInputEvent): void {
     this.resume.certifications = this.resume.certifications.filter(p => p !== '');
     this.manageItem(event.value, this.certs, this.resume.certifications, 'add');
@@ -97,20 +87,12 @@ export class PersonalInformationComponent implements OnInit {
     this.techControl.setValue(null);
   }
 
-  editMeth(methodology: string, event: MatChipEditedEvent) {
-    this.manageItem(event.value, this.techs, this.resume.methodologies, 'edit', methodology);
-  }
-
   editCert(certification: string, event: MatChipEditedEvent) {
     this.manageItem(event.value, this.certs, this.resume.certifications, 'edit', certification);
   }
 
   editTech(oldTech: string, event: MatChipEditedEvent) {
     this.manageItem(event.value, this.techs, this.resume.technologies, 'edit', oldTech);
-  }
-
-  removeMeth(meth: string): void {
-    this.manageItem(meth, this.meths, this.resume.methodologies, 'remove');
   }
 
   removeCert(cert: string): void {

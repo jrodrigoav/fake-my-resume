@@ -49,24 +49,6 @@
     </div>
     <div class="form-group">
         <mat-form-field>
-            <mat-label>Methodologies</mat-label>
-            <mat-chip-grid #chipGridMeth  name="methodologies">
-                <mat-chip-row *ngFor="let meth of meths" [editable]="true"
-                    (edited)="editMeth(meth, $event)" (removed)="removeMeth(meth)">
-                    {{ meth }}
-                    <button matChipRemove>
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </mat-chip-row>
-            </mat-chip-grid>
-            <input matInput #methInput placeholder="add new methodology..."
-                [formControl]="methControl" [matChipInputFor]="chipGridMeth"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="addMeth($event)">
-        </mat-form-field>
-    </div>
-    <div class="form-group">
-        <mat-form-field>
             <mat-label>Certifications</mat-label>
             <mat-chip-grid #chipGridCert  name="certifications">
                 <mat-chip-row *ngFor="let cert of certs" [editable]="true"

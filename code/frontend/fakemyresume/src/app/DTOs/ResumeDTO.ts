@@ -9,7 +9,6 @@ export class ResumeDTO {
     email!: string;
     description!: string;
     technologies!: string[];
-    methodologies!: string[];
     certifications!: string[];
     workExperience!: WorkExperience[];
     education!: Education[];
@@ -20,7 +19,6 @@ export class ResumeDTO {
         this.email = "";
         this.description = "";
         this.technologies = [];
-        this.methodologies = [];
         this.certifications = [];
         this.workExperience = [];
         this.education = [];

@@ -18,8 +18,6 @@ public class Resume
 
     public List<string>? Technologies { get; set; }
 
-    public List<string>? Methodologies { get; set; }
-
     public List<string>? Certifications { get; set; }
 
     public List<WorkExperience>? WorkExperience { get; set; }
