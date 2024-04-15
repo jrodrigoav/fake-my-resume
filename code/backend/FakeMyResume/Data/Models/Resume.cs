@@ -16,8 +16,6 @@ public class Resume
 
     public string? Description { get; set; }
 
-    public List<string>? Technologies { get; set; }
-
     public List<string>? Certifications { get; set; }
 
     public List<WorkExperience>? WorkExperience { get; set; }

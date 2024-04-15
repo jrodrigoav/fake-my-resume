@@ -43,6 +43,7 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         var font = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
         var boldFont = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI Bold.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+        var boldItalicFont = PdfFontFactory.CreateFont(System.IO.Path.Combine(_assetsPath, "Segoe UI Bold Italic.ttf"), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
 
         var textTitleStyle = new Style();
         textTitleStyle.SetFont(font).SetBold().SetCharacterSpacing(2);
@@ -74,7 +75,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         var tableTextStyle = new Style();
         tableTextStyle.SetFont(font).SetFontColor(ColorConstants.BLACK).SetFontSize(9).SetBold().SetCharacterSpacing(1);
 
-        var columnWidths = new float[] { 200, 300 };
+        var columnWidths = new float[] { 250, 250 };
         var table = new Table(columnWidths);
 
         var techologiesCell = new Cell(1, 0).AddStyle(tableTitleStyle).Add(new Paragraph(new Text("TECHNOLOGIES:").AddStyle(tableTextStyle)));
@@ -84,7 +85,8 @@ public class DocumentGenerationService : IDocumentGenerationService
         table.AddHeaderCell(techologiesCell);
         table.AddHeaderCell(certificationsCell);
         /// technologies table
-        table.AddCell(addNestedTableWithTwoColumns(resume?.Technologies, font));
+        var technologies = resume?.WorkExperience?.SelectMany(e => e.Technologies).Distinct().Order().ToList() ?? [];
+        table.AddCell(addNestedTableWithTwoColumns(technologies, font));
         /// certifications table
         table.AddCell(addNestedTable(resume?.Certifications, font));
         table.SetMargin(10);
@@ -99,7 +101,7 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         resume.WorkExperience?.ForEach(we =>
         {
-            document.Add(addWorkExperienceTable(textTitleStyle, tableTextStyle, textDescription, font, we));
+            document.Add(addWorkExperienceTable(textTitleStyle, textDescription, boldFont, boldItalicFont, we));
         });
 
         #endregion
@@ -166,33 +168,41 @@ public class DocumentGenerationService : IDocumentGenerationService
         return description;
     }
 
-    private Table addWorkExperienceTable(Style textTitleStyle, Style tableTextStyle, Style textDescription, PdfFont font, WorkExperience workExperience)
+    private Table addWorkExperienceTable(Style textTitleStyle, Style textDescription, PdfFont boldFont, PdfFont boldItalicFont, WorkExperience workExperience)
     {
-        float[] workExperienceWidth = { 800f };
-        Table workExperienceTable = new Table(workExperienceWidth);
+        float[] workExperienceWidth = [800f];
+        var workExperienceTable = new Table(workExperienceWidth);
 
         var description = workExperience.Description;
 
         var culture = CultureInfo.CreateSpecificCulture("en-US");
         string fullDate  = $"({workExperience.DateBegin.ToString("MMM", culture).ToUpperInvariant()} {workExperience.DateBegin.Year} - {workExperience.DateEnd.ToString("MMM", culture).ToUpperInvariant()} {workExperience.DateEnd.Year})";
         var fullTitle = new Paragraph(new Text(workExperience.CompanyName).AddStyle(textTitleStyle).SetFontColor(blueColor));
-        fullTitle.Add(new Text($" {workExperience.ProjectName} ").AddStyle(textTitleStyle).SetFontColor(blueColor));
+        fullTitle.Add(new Text($" {workExperience.ProjectName} ").AddStyle(textTitleStyle).SetFontColor(ColorConstants.BLACK));
         fullTitle.Add(new Text(fullDate).SetFontColor(ColorConstants.BLACK).SetBold().SetCharacterSpacing(1).SetFontSize(11));
 
 
-        Cell title = new Cell(1, 0).Add(fullTitle).SetBorder(Border.NO_BORDER);
-        Cell twoCell = new Cell(1, 0).Add(new Paragraph(new Text(workExperience.Role).SetFont(font).SetFontColor(ColorConstants.BLACK).SetBold().SetFontSize(9).SetItalic().SetCharacterSpacing(1))).SetBorder(Border.NO_BORDER);
-        Cell threeCell = new Cell(1, 0).Add(new Paragraph(new Text(description).AddStyle(textDescription))).SetBorder(Border.NO_BORDER);
-
-        SolidLine line = new SolidLine(2f);
-        line.SetColor(greyColor);
-        LineSeparator ls = new LineSeparator(line);
-
-
-
+        var title = new Cell(1, 0).Add(fullTitle).SetBorder(Border.NO_BORDER);
         workExperienceTable.AddCell(title);
-        workExperienceTable.AddCell(twoCell);
-        workExperienceTable.AddCell(threeCell);
+
+        var roleCell = new Cell(1, 0).Add(new Paragraph(new Text(workExperience.Role).SetFont(boldItalicFont).SetFontColor(ColorConstants.BLACK).SetFontSize(9).SetCharacterSpacing(1))).SetBorder(Border.NO_BORDER);
+        workExperienceTable.AddCell(roleCell);
+
+        var descriptionCell = new Cell(1, 0).Add(new Paragraph(new Text(description).AddStyle(textDescription))).SetBorder(Border.NO_BORDER);
+        workExperienceTable.AddCell(descriptionCell);
+
+        if(workExperience.Technologies.Count > 0)
+        {
+            var experienceTechnologies = string.Join(", ", workExperience.Technologies) + ".";
+            var technologiesCell = new Cell(1, 0).Add(
+                new Paragraph(new Text("Technologies & Tools: ").SetFont(boldFont).SetFontColor(ColorConstants.BLACK).SetFontSize(9))
+                .Add(new Text(experienceTechnologies)).AddStyle(textDescription)
+            ).SetBorder(Border.NO_BORDER);
+            workExperienceTable.AddCell(technologiesCell);
+        }
+
+        var line = new SolidLine(2f);
+        line.SetColor(greyColor);
 
         workExperienceTable.SetMargin(10);
 
@@ -218,9 +228,9 @@ public class DocumentGenerationService : IDocumentGenerationService
 
     private Cell addNestedTableWithTwoColumns(List<string> list, PdfFont font)
     {
-        float[] cellThechnologiesWidth = { 7, 90, 7, 90 };
+        float[] cellTechnologiesWidth = [7, 90, 7, 90];
 
-        Table techologiesCellTable = new Table(cellThechnologiesWidth);
+        var techologiesCellTable = new Table(cellTechnologiesWidth);
         for (int i = 0; i < list.Count; i++)
         {
             if (list.Count % 2 == 0)

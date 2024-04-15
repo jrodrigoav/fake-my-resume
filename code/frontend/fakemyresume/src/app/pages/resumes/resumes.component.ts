@@ -1,6 +1,6 @@
 
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { EducationComponent } from './education/education.component';
@@ -33,6 +33,7 @@ export class ResumesComponent implements OnDestroy {
       currentRole: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       description: new FormControl('', [Validators.required]),
+      certifications: this.fb.array([]),
     });
 
     this.workExperienceForm = this.fb.group({
@@ -41,7 +42,8 @@ export class ResumesComponent implements OnDestroy {
       role: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       dateBegin: new FormControl(new Date(), [Validators.required]),
-      dateEnd: new FormControl(new Date(), [Validators.required])
+      dateEnd: new FormControl(new Date(), [Validators.required]),
+      technologies: this.fb.array([]),
     });
 
     this.educationForm = this.fb.group({
@@ -101,6 +103,7 @@ export class ResumesComponent implements OnDestroy {
   }
 
   private setResume(resume: ResumeDTO) {
+    (this.resumeForm.controls['certifications'] as FormArray).controls = resume.certifications.map(v => new FormControl());
     this.resumeForm.patchValue(resume);
     this.resume = resume;
   }

@@ -22,7 +22,7 @@ public class WorkExperienceDTOValidator : AbstractValidator<WorkExperienceDTO>
             .Must((x, endMonth) => BeAValidMonth(x.DateEnd.Year, endMonth))
             .WithMessage("Month is required, must be less than or equal to the current year");
         RuleFor(x => x.Description).NotEmpty().MaximumLength(1000).WithMessage("To is required with a maximum lenght of 1000 characters");
-
+        RuleFor(x => x.Technologies).NotEmpty();
     }
 
     private bool BeAValidMonth(int? year, int? month)
