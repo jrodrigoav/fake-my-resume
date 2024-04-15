@@ -19,6 +19,7 @@ export class AppComponent {
   title = 'fakemyresume';
   pageLinks = [
     { label: 'Home', route: '/home' },
+    { label: 'Admin Panel', route: '/admin-panel' },
   ];
 
   loggedIn: Observable<boolean> = of(true);
