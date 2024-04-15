@@ -6,8 +6,6 @@ public class Resume
 
     public string? CurrentRole { get; set; }
 
-    public string? Email { get; set; }
-
     public string? Description { get; set; }
 
     public List<string>? Certifications { get; set; }

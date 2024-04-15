@@ -6,7 +6,6 @@ export class ResumeDTO {
     accountId?: string;
     fullName!: string;
     currentRole!: string;
-    email!: string;
     description!: string;
     certifications!: string[];
     workExperience!: WorkExperience[];
@@ -15,7 +14,6 @@ export class ResumeDTO {
     constructor() {
         this.fullName = "";
         this.currentRole = "";
-        this.email = "";
         this.description = "";
         this.certifications = [];
         this.workExperience = [];

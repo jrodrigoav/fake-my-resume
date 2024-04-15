@@ -31,7 +31,6 @@ export class ResumesComponent implements OnDestroy {
     this.resumeForm = this.fb.group({
       fullName: new FormControl('', [Validators.required]),
       currentRole: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
       description: new FormControl('', [Validators.required]),
       certifications: this.fb.array([]),
     });
