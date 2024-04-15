@@ -1,6 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddSpaStaticFiles(configure => configure.RootPath = "wwwroot");
+    builder.Services.AddSwaggerGen();
 }
 var app = builder.Build();
 {
@@ -20,5 +21,11 @@ var app = builder.Build();
     });
     app.MapGet("/api", () => "FakeMyResume");
     app.UseSpa(configuration => configuration.Options.DefaultPage = new Microsoft.AspNetCore.Http.PathString("/index.html"));
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 }
 app.Run();
