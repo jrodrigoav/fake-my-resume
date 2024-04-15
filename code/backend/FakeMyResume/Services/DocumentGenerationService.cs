@@ -1,4 +1,4 @@
-﻿using iText.IO.Image;
+using iText.IO.Image;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
@@ -11,8 +11,8 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using FakeMyResume.Data.Models;
 using FakeMyResume.Services.Interfaces;
-using FakeMyResume.Services.Utils;
 using System.Reflection;
+using System.Globalization;
 
 namespace FakeMyResume.Services;
 
@@ -179,7 +179,8 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         var description = workExperience.Description;
 
-        string fullDate  = $"({Months.findMonth(workExperience.DateBegin.Month)} {workExperience.DateBegin.Year} - {Months.findMonth(workExperience.DateEnd.Month)} {workExperience.DateEnd.Year})";
+        var culture = CultureInfo.CreateSpecificCulture("en-US");
+        string fullDate  = $"({workExperience.DateBegin.ToString("MMM", culture).ToUpperInvariant()} {workExperience.DateBegin.Year} - {workExperience.DateEnd.ToString("MMM", culture).ToUpperInvariant()} {workExperience.DateEnd.Year})";
         var fullTitle = new Paragraph(new Text(workExperience.CompanyName).AddStyle(textTitleStyle).SetFontColor(blueColor));
         fullTitle.Add(new Text($" {workExperience.ProjectName} ").AddStyle(textTitleStyle).SetFontColor(blueColor));
         fullTitle.Add(new Text(fullDate).SetFontColor(ColorConstants.BLACK).SetBold().SetCharacterSpacing(1).SetFontSize(11));
