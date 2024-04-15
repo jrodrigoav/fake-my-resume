@@ -5,6 +5,9 @@ using FakeMyResume.DTOs.FluentValidations;
 using FluentValidation;
 using FakeMyResume.Data;
 using Microsoft.Identity.Web;
+using FakeMyResume.Models;
+using FakeMyResume.Jobs;
+using System.Net;
 
 const string AllowLocalhostCORSPolicy = "AllowLocalhostCORSPolicy";
 
@@ -20,6 +23,17 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IDocumentGenerationService, DocumentGenerationService>();
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IUserService, UserService>();
+
+    // Jobs
+    builder.Services.AddScoped<ImporterService>();
+    builder.Services.AddHttpClient<ImporterService>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+    {
+        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+    });
+
+    builder.Configuration.AddUserSecrets<StackExchangeSettings>();
+    builder.Services.Configure<StackExchangeSettings>(builder.Configuration.GetSection(nameof(StackExchangeSettings)));
+    builder.Services.AddJobs();
 
     var connectionString = builder.Configuration.GetConnectionString("MyResume");
     builder.Services.AddSqlServer<MakeMyResumeDb>(connectionString);
