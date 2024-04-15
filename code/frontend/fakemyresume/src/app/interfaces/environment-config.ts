@@ -7,6 +7,12 @@ export interface IEnvironmentConfig {
     unicornRewardsApiUrl: string;
     makeMyResumeApiUrl: string;
     techTagsUrl: string;
+    msalAuth:{
+        clientId: string;
+        authority: string;
+        redirectUri: string;
+        postLogoutRedirectUri: string;
+    }
 }
 
 export const ENV_CONFIG = new InjectionToken<IEnvironmentConfig>('EnvironmentConfig');

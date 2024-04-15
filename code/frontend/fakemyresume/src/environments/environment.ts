@@ -7,6 +7,12 @@ export const environment = {
     unicornRewardsApiUrl: "https://localhost:7127/api",
     makeMyResumeApiUrl: "https://localhost:7127/api/resume",
     techTagsUrl: "https://localhost:7127/api/aditional-skills",
+    msalAuth:{
+        clientId: "4186cd96-2142-430d-bfd3-2ff7b64a2c05",
+        authority: "https://login.microsoftonline.com/eedd1340-df1a-4db2-8a03-b4cfb1fa3e9d",
+        redirectUri: '/',
+        postLogoutRedirectUri: '/'
+    }
 };
 
 /*
