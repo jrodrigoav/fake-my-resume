@@ -1,29 +1,20 @@
 ﻿using FakeMyResume.Data;
 using FakeMyResume.Data.Models;
 using FakeMyResume.Services.Interfaces;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 namespace FakeMyResume.Services;
 
-public class TagService : ITagService
+public class TagService(MakeMyResumeDb context) : ITagService
 {
-    private readonly string _assetsPath;
-    private readonly MakeMyResumeDb _context;
-    public TagService(MakeMyResumeDb context) 
+    public Task<List<Tag>> GetTags(string text)
     {
-        _context = context;
-        var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
-        _assetsPath = Path.Combine(assemblyPath, "Assets");
-    }
-    public List<Tag> GetTags(string text)
-    {
-        var auxText = text.Replace(" ", string.Empty).ToLower();
-        var tags = FindTags(auxText);
-        return tags;
+        return context.Tag.Where(t => t.Name.Replace(" ", string.Empty).ToLower().Contains(text)).ToListAsync();
     }
 
-    public List<Tag> FindTags(string text)
+    public async Task<int> CreateTags(IEnumerable<Tag> tags)
     {
-        return _context.Tag.Where(x => x.TagName.Replace(" ", string.Empty).ToLower().Contains(text)).ToList();
+        await context.Tag.AddRangeAsync(tags);
+        return await context.SaveChangesAsync();
     }
 }

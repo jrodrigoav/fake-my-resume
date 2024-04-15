@@ -4,5 +4,7 @@ namespace FakeMyResume.Services.Interfaces;
 
 public interface ITagService
 {
-    List<Tag> GetTags(string text);
+    Task<List<Tag>> GetTags(string text);
+
+    Task<int> CreateTags(IEnumerable<Tag> tags);
 }
