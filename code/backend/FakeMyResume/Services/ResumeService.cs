@@ -30,9 +30,9 @@ public class ResumeService : IResumeService
         return GetResume(dataResume.Id);
     }
 
-    public Resume? UpdateResume(Resume resume)
+    public Resume? UpdateResume(int id, Resume resume)
     {
-        var dataResume = FindResume(resume.Id);
+        var dataResume = FindResume(id);
 
         if (dataResume == null)
         {

@@ -8,7 +8,7 @@ public interface IResumeService
 
     Resume? GetResume(int id);
 
-    Resume? UpdateResume(Resume resume);
+    Resume? UpdateResume(int id, Resume resume);
 
     Stream? GetResumePDF(int id);
 

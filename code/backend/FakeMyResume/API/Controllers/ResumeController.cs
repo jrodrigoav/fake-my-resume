@@ -73,8 +73,8 @@ public class ResumeController : ControllerBase
 
     }
 
-    [HttpPut]
-    public IActionResult UpdateResume(ResumeDTO resumeDTO)
+    [HttpPut("{id}")]
+    public IActionResult UpdateResume(int id, [FromBody] ResumeDTO resumeDTO)
     {
         var validationResult = _validator.Validate(resumeDTO);
         if (!validationResult.IsValid)
@@ -84,7 +84,7 @@ public class ResumeController : ControllerBase
         }
         var resume = _mapper.Map<Resume>(resumeDTO);
 
-        var result = _resumeService.UpdateResume(resume);
+        var result = _resumeService.UpdateResume(id, resume);
 
         return result == null? NotFound() : Ok(resume);
 
