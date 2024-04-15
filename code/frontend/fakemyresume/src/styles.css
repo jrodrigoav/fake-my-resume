@@ -12,3 +12,43 @@ html, body {
     min-height: 100dvh;
     max-height: 100dvh;
 }
+
+/* Custom styles */
+.bg-unosquare {
+    background-color: #32bed7 !important;
+}
+
+.submit-unosquare {
+    background-color: #32bed7 !important;
+    color: white !important;
+}
+
+.mat-step-icon-selected {
+  background-color: #191919 !important;
+  color: #f2f2f2 !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  caret-color:#191919 !important;
+}
+
+.mat-step-icon-state-edit {
+  background-color: rgba(0, 0, 0, 0.54) !important;
+  color: var(--mat-stepper-header-edit-state-icon-foreground-color);
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+}
