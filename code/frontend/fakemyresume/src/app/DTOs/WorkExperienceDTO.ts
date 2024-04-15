@@ -1,5 +1,3 @@
-import { Project } from "./ProjectDTO";
-
 
 export class WorkExperience {
     dateBegin?: Date;
@@ -8,5 +6,4 @@ export class WorkExperience {
     projectName?: string;
     role?: string;
     description?: string;
-    projects?: Project[];
 }

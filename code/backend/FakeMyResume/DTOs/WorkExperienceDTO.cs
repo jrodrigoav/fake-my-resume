@@ -13,6 +13,4 @@ public class WorkExperienceDTO
     public string? Role { get; set; }
 
     public string? Description { get; set; }
-
-    public List<ProjectDTO> Projects { get; set; } = [];
 }

@@ -196,37 +196,9 @@ public class DocumentGenerationService : IDocumentGenerationService
         workExperienceTable.AddCell(twoCell);
         workExperienceTable.AddCell(threeCell);
 
-        workExperience.Projects.ForEach(p =>
-        {
-            Cell res = new Cell().Add(addProjectTable(tableTextStyle, textDescription, font, p)).SetBorder(Border.NO_BORDER);
-            workExperienceTable.AddCell(res);
-            Cell lineSeparator = new Cell().Add(ls).SetBorder(Border.NO_BORDER);
-            workExperienceTable.AddCell(lineSeparator);
-        });
         workExperienceTable.SetMargin(10);
 
         return workExperienceTable;
-    }
-
-    private Table addProjectTable(Style tableTextStyle, Style textDescription, PdfFont font, Project project)
-    {
-        float[] columns = { 800 };
-        Table projectTable = new Table(columns);
-
-        Cell projectNameTitle = new Cell(0, 0).Add(new Paragraph(new Text("Project Name:").AddStyle(tableTextStyle))).SetBorder(Border.NO_BORDER);
-        projectTable.AddCell(projectNameTitle);
-        Cell name = new Cell(0, 0).Add(new Paragraph(new Text(project.Name).AddStyle(textDescription))).SetBorder(Border.NO_BORDER);
-        projectTable.AddCell(name);
-        Cell descriptionTitle = new Cell(0, 0).Add(new Paragraph(new Text("Description:").AddStyle(tableTextStyle))).SetBorder(Border.NO_BORDER);
-        projectTable.AddCell(descriptionTitle);
-        Cell description = new Cell(1, 0).Add(new Paragraph(new Text(project.Description).AddStyle(textDescription))).SetBorder(Border.NO_BORDER);
-        projectTable.AddCell(description);
-        Cell technologiesUsedTitle = new Cell(1, 0).Add(new Paragraph(new Text("Technologies used:").AddStyle(tableTextStyle))).SetBorder(Border.NO_BORDER);
-        projectTable.AddCell(technologiesUsedTitle);
-
-        projectTable.AddCell(addNestedTableWithTwoColumns(project.TechnologiesUsed, font));
-        projectTable.SetMarginTop(10);
-        return projectTable;
     }
 
     private Table addEducationTable(Style textDescription, PdfFont font, Education education)

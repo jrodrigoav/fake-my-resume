@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using FakeMyResume.Data.Models;
 using FakeMyResume.DTOs;
 
@@ -10,7 +10,6 @@ public class MapperConfigurationProfile : Profile
     {
         //Models to DTO
         CreateMap<Resume, ResumeDTO>();
-        CreateMap<Project, ProjectDTO>();
         CreateMap<Education, EducationDTO>();
         CreateMap<WorkExperience, WorkExperienceDTO>();
         CreateMap<Resume, CreateResumeDTO>();
@@ -18,7 +17,6 @@ public class MapperConfigurationProfile : Profile
 
         //DTO to Models
         CreateMap<ResumeDTO, Resume>();
-        CreateMap<ProjectDTO, Project>();
         CreateMap<EducationDTO, Education>();
         CreateMap<WorkExperienceDTO, WorkExperience>();
         CreateMap<CreateResumeDTO, Resume>();

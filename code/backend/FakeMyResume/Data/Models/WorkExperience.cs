@@ -1,4 +1,4 @@
-﻿namespace FakeMyResume.Data.Models;
+namespace FakeMyResume.Data.Models;
 
 public class WorkExperience
 {
@@ -13,6 +13,4 @@ public class WorkExperience
     public string? Role { get; set; }
 
     public string? Description { get; set; }
-
-    public List<Project>? Projects { get; set; }
 }
