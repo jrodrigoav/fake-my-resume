@@ -12,4 +12,5 @@ public class DataResume
 
     public DateTime LastUpdated { get; set; }
 
+    public virtual User? User { get; set; }
 }

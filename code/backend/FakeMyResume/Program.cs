@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IDocumentGenerationService, DocumentGenerationService>();
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IAditionalSkillsService, AditionalSkillsService>();
+    builder.Services.AddScoped<IUserService, UserService>();
 
     var connectionString = builder.Configuration.GetConnectionString("MyResume");
     builder.Services.AddSqlServer<MakeMyResumeDb>(connectionString);

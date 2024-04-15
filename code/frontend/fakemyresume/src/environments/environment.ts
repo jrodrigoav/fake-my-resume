@@ -4,6 +4,7 @@
 
 export const environment = {
     production: false,
+    apiUrl: "https://localhost:7127/api",
     unicornRewardsApiUrl: "https://localhost:7127/api",
     makeMyResumeApiUrl: "https://localhost:7127/api/resume",
     techTagsUrl: "https://localhost:7127/api/aditional-skills",
