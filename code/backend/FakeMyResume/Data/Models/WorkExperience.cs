@@ -2,13 +2,9 @@
 
 public class WorkExperience
 {
-    public int FromYear { get; set; }
+    public DateTime DateBegin { get; set; }
 
-    public int FromMonth { get; set; }
-
-    public int ToYear { get; set; }
-
-    public int ToMonth { get; set; }
+    public DateTime DateEnd { get; set; }
 
     public string? CompanyName { get; set; }
 

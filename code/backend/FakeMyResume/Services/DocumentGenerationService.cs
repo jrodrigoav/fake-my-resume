@@ -1,4 +1,4 @@
-﻿using iText.IO.Image;
+using iText.IO.Image;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
@@ -173,7 +173,7 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         var description = workExperience.Description;
 
-        string fullDate  = $"({Months.findMonth(workExperience.FromMonth)} {workExperience.FromYear} - {Months.findMonth(workExperience.ToMonth)} {workExperience.ToYear})";
+        string fullDate  = $"({Months.findMonth(workExperience.DateBegin.Month)} {workExperience.DateBegin.Year} - {Months.findMonth(workExperience.DateEnd.Month)} {workExperience.DateEnd.Year})";
         var fullTitle = new Paragraph(new Text(workExperience.CompanyName).AddStyle(textTitleStyle).SetFontColor(blueColor));
         fullTitle.Add(new Text($" {workExperience.ProjectName} ").AddStyle(textTitleStyle).SetFontColor(blueColor));
         fullTitle.Add(new Text(fullDate).SetFontColor(ColorConstants.BLACK).SetBold().SetCharacterSpacing(1).SetFontSize(11));
@@ -293,79 +293,5 @@ public class DocumentGenerationService : IDocumentGenerationService
             Cell columnMessage = new Cell().SetBorder(Border.NO_BORDER).Add(message.SetVerticalAlignment(VerticalAlignment.BOTTOM));
             return columnMessage;
         }
-    }        
-    private Resume createLocalResume() 
-    {
-        var resume = new Resume();
-        resume.Id = 1;
-        resume.AccountId = "001";
-        resume.FullName = "Jose Perez Lopez";
-        resume.CurrentRole = ".NET Software Developer";
-        resume.Email = "jose.perez@unosquare.com";
-        resume.Description = "Software Developer with 11 years of proven experience on software development, primarily using .NET technologies, for Web, Cloud and Desktop platforms. Broad knowledge of C# language and JavaScript, along with SQL Server databases, as well as resource management, development, and deployment on Microsoft Azure.";
-        resume.Technologies = new List<string> { "Angular v6 - v12", ".NET", "ASP.NET", ".NET Core", "SQL", "Entity Framework Core", "MONGO DB", "MYSQL", "JavaScript", "React Native" };
-        resume.Methodologies = new List<string> { "Methodologies used SCRUM", "KANBAN" };
-        resume.Certifications = new List<string> { "Microsoft Certified Professional (MCID 12311731)", "Aspectos básicos de Microsoft 365 MS-900", "HTML5 Javascript 325 MS-262" };
-        resume.WorkExperience = new List<WorkExperience> { 
-            new WorkExperience() { 
-                FromYear = 2018,
-                FromMonth = 1,
-                ToYear = 2022,
-                ToMonth = 12,
-                CompanyName = "Unosquare",
-                ProjectName = ".NET Center of Excellence",
-                Role = "Software developer",
-                Description = "Currently assigned to the .NET Center of Excellence. Here we are working on different areas of improvement in\r\nthe C# language as well as consolidating and learning new features of the .NET platform.",
-                Projects= new List<Project> { new Project()
-                {
-                    Name = "Make my resume",
-                    Description = "Creation of a new tool to make a resume",
-                    TechnologiesUsed = new List<string> { ".NET", "ASP.NET", ".NET Core" }
-                } 
-              }
-            },
-            new WorkExperience() {
-                FromYear = 2016,
-                FromMonth = 9,
-                ToYear = 2018,
-                ToMonth = 5,
-                CompanyName = "Microsoft",
-                ProjectName = "Update DLL",
-                Role = "Software developer",
-                Description = "Currently assigned to the .NET Center of Excellence. Here we are working on different areas of improvement in\r\nthe C# language as well as consolidating and learning new features of the .NET platform.",
-                Projects= new List<Project> { 
-                    new Project()
-                    {
-                        Name = "upadte dll",
-                        Description = "update a DLL tool",
-                        TechnologiesUsed = new List<string> { ".NET", "ASP.NET", ".NET Core", "Telerik", "Windows Form" }
-                    },
-                    new Project()
-                    {
-                        Name = "CFDI update",
-                        Description = "update a CFDI tool",
-                        TechnologiesUsed = new List<string> { ".NET", "ASP.NET", ".NET Core", "Telerik", "Windows Form", "Itext 7" }
-                    }
-              }
-            }
-        };
-        resume.Education = new List<Education> {
-            new Education()
-            {
-                Degree = "Maestria",
-                Major = "Análisis de datos",
-                UniversityName = "Instituto Politécnico Naciona",
-                YearOfCompletion = "2020"
-            },
-            new Education()
-            {
-                Degree = "Licenciatura",
-                Major = "Software engineer",
-                UniversityName = "Universidad la Salle",
-                YearOfCompletion = "2015"
-            }
-        };
-
-        return resume;
     }
 }
