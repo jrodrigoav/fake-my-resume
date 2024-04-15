@@ -1,4 +1,4 @@
-﻿using FakeMyResume.Data;
+using FakeMyResume.Data;
 using FakeMyResume.Data.Models;
 using FakeMyResume.Services.Interfaces;
 using System.Text.Json;
@@ -70,5 +70,13 @@ public class ResumeService : IResumeService
             resume = JsonSerializer.Deserialize<Resume>(dataResume.JsonData);
         }
         return resume;
+    }
+
+    public IEnumerable<Resume> GetResumes(string accountId)
+    {
+        return _context.DataResume.Where(resume => resume.AccountId.Equals(accountId))
+            .AsEnumerable()
+            .Select(resume => JsonSerializer.Deserialize<Resume>(resume.JsonData))
+            .Where(resume => resume != null)!;
     }
 }

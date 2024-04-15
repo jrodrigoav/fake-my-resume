@@ -8,4 +8,5 @@ public interface IResumeService
     Resume? GetResume(int id);
     Resume? UpdateResume(Resume resume);
     Stream? GetResumePDF(int id);
+    IEnumerable<Resume> GetResumes(string accountId);
 }
