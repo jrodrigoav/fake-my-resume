@@ -64,21 +64,13 @@
               <th mat-header-cell *matHeaderCellDef> Nombre de Proyecto </th>
               <td mat-cell *matCellDef="let element"> {{element.projectName}} </td>
             </ng-container>
-            <ng-container matColumnDef="fromMonth">
+            <ng-container matColumnDef="from">
                 <th mat-header-cell *matHeaderCellDef> Fecha Inicio</th>
-                <td mat-cell *matCellDef="let element"> {{element.dateBegin}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.dateBegin | date: 'MMM y'}} </td>
               </ng-container>
-              <ng-container matColumnDef="fromYear">
+              <ng-container matColumnDef="to">
                 <th mat-header-cell *matHeaderCellDef> Fecha Fin </th>
-                <td mat-cell *matCellDef="let element"> {{element.dateEnd}} </td>
-              </ng-container>
-              <ng-container matColumnDef="toMonth">
-                <th mat-header-cell *matHeaderCellDef> Mes</th>
-                <td mat-cell *matCellDef="let element"> {{element.toMonth}} </td>
-              </ng-container>
-              <ng-container matColumnDef="toYear">
-                <th mat-header-cell *matHeaderCellDef> Año </th>
-                <td mat-cell *matCellDef="let element"> {{element.toYear}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.dateEnd | date: 'MMM y'}} </td>
               </ng-container>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplayExperience"></tr>
             <tr mat-row *matRowDef="let row; columns: columnsToDisplayExperience;"></tr>

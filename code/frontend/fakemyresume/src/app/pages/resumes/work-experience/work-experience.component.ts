@@ -8,11 +8,12 @@ import { MatTableModule } from '@angular/material/table';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { WorkExperience } from '../../../DTOs/WorkExperienceDTO';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-work-experience',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule],
+  imports: [DatePipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule],
   templateUrl: './work-experience.component.html',
   styleUrls: ['./work-experience.component.css']
 })
@@ -25,10 +26,8 @@ export class WorkExperienceComponent implements OnInit {
     'role',
     'description',
     'projectName',
-    'fromMonth',
-    'fromYear',
-    'toMonth',
-    'toYear'
+    'from',
+    'to',
   ];
  
   constructor(private cd: ChangeDetectorRef, private utilsService : UtilsService){
@@ -45,7 +44,7 @@ export class WorkExperienceComponent implements OnInit {
       this.dataSourceExperience.push(experience);
       this.resume.workExperience = this.dataSourceExperience;
       this.utilsService.clearFormGroupValues(this.workExperienceForm);
-      }
+    }
   }
 
   chosenMonthHandler(dateControlName: string, normlizedMonth: Date, datepicker: MatDatepicker<Date>) {
