@@ -1,7 +1,12 @@
+using FakeMyResume.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddSpaStaticFiles(configure => configure.RootPath = "wwwroot");
     builder.Services.AddSwaggerGen();
+
+    var connectionString = builder.Configuration.GetConnectionString("MyResume");
+    builder.Services.AddSqlServer<MakeMyResumeDb>(connectionString);
 }
 var app = builder.Build();
 {
