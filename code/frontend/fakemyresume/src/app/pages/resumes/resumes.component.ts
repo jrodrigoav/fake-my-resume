@@ -76,6 +76,10 @@ export class ResumesComponent implements OnDestroy {
   }
 
   update(): void {
+    this.resume = {
+      ...this.resume,
+      ...this.resumeForm.getRawValue(),
+    }
     if(!this.resume.id) return;
     this.resumeService.updateResume(this.resume.id, this.resume).subscribe(response => {
       // TODO: Handle update
