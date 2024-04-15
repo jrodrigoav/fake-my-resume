@@ -46,6 +46,19 @@ public class ResumeController : ControllerBase
         return Created($"/api/resume/{newResume.Id}", newResume);
     }
 
+    [HttpGet]
+    public IActionResult GetAccountResumes()
+    {
+        var currentUser = this.User;
+        var accountId = currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (accountId == null)
+            return new UnauthorizedResult();
+
+        var resumes = _resumeService.GetResumes(accountId);
+        return Ok(resumes);
+    }
+
     [HttpGet("{id}")]
     public IActionResult GetResume(int id)
     {
