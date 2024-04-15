@@ -1,13 +1,5 @@
 <div class="main-container">
-  <mat-toolbar color="primary" style="background-color: #191919 !important; color:f2f2f2;">
-    <mat-toolbar-row>
-        <button mat-icon-button (click)="!sidenav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-      <span routerLink="/home">🦄 MakeMyResume</span>
-    </mat-toolbar-row>
-  </mat-toolbar>
-
+  <app-header (menuClick)="sidenav.toggle()"></app-header>
   <mat-sidenav-container>
     <mat-sidenav #sidenav mode="over">
       <mat-nav-list>

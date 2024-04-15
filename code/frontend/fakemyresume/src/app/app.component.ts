@@ -2,18 +2,16 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Subject, filter } from 'rxjs';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MsalBroadcastService, MsalModule, MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventType } from '@azure/msal-browser';
+import { HeaderComponent } from './layout/header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ CommonModule, RouterLink, RouterOutlet, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule, MsalModule ],
+  imports: [ CommonModule, RouterLink, RouterOutlet, MatListModule, MatSidenavModule, MsalModule, HeaderComponent ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
