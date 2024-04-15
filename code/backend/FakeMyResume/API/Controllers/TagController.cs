@@ -1,5 +1,6 @@
 ﻿using FakeMyResume.Data.Models;
 using FakeMyResume.DTOs;
+using FakeMyResume.Models.SearchParameters;
 using FakeMyResume.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,18 +10,10 @@ namespace FakeMyResume.API.Controllers;
 [ApiController, Authorize, Route("api/tag")]
 public class TagController(ITagService tagService) : ControllerBase
 {
-    [HttpGet("{text}")]
-    public async Task<IActionResult> SearchTags(string text)
+    [HttpGet]
+    public async Task<IActionResult> SearchTags([FromQuery] SearchTagParams search)
     {
-        if (string.IsNullOrEmpty(text))
-        {
-            return NotFound();
-        }
-        var tags = await tagService.GetTags(text);
-        if (tags == null || tags.Count == 0)
-        {
-            return NotFound();
-        }
+        var tags = await tagService.GetTags(search);
         return Ok(tags.Select(t => t.Name));
     }
 
