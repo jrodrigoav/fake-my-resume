@@ -26,7 +26,7 @@
             </mat-form-field>
         </div>
         <div class="form-group">
-          <app-chip-multiselect (onInputChange)="inputChanges.next($event)" label="Technologies" placeholder="Add new technology..." [options]="filteredTechs | async" [formArray]="technologiesControl">
+          <app-chip-multiselect (onInputChange)="inputChanges.next($event)" label="Technologies" placeholder="Add new technology..." [options]="filteredTechs | async" [formArray]="technologiesControl" [separatorKeyCodes]="[]">
           </app-chip-multiselect>
         </div>
         <mat-form-field class="full-width">

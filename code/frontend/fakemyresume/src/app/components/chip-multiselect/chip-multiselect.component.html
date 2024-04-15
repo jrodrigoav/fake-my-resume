@@ -12,7 +12,7 @@
     <input #itemInput matInput type="text" [placeholder]="placeholder"
         [formControl]="inputControl" [matAutocomplete]="autoComplete"
         [matChipInputFor]="chipGrid"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
         (matChipInputTokenEnd)="addItem($event)" />
     <mat-autocomplete #autoComplete (optionSelected)="onItemSelect($event)">
         @if(options?.length) {
