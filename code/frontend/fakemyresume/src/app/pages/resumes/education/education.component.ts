@@ -1,12 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
+import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { Education } from '../../../DTOs/EducationDTO';
 
@@ -23,30 +22,15 @@ export class EducationComponent {
 
   displayedColumnsEducation: string[] = ['degree', 'major', 'universityName', 'yearOfCompletion', 'country', 'state', 'actions'];
 
-  constructor(private utilsService: UtilsService) {
-    
-  }
-
-
   removeEducation(element: any) {
     this.resume.education.splice(element, 1);
   }
 
   addEducation() {
     if (this.educationForm.valid) {
-      let education: Education = this.utilsService.mapFormGroupToModel(this.educationForm);
-      this.resume.education.push(education);
-      this.clearFormGroupValues();
+      const education: Education = this.educationForm.value;
+      this.resume.education = [...this.resume.education, education];
+      this.educationForm.reset();
     }
   }
-
-  clearFormGroupValues() {
-    Object.keys(this.educationForm.controls).forEach(controlName => {
-      const control = this.educationForm.get(controlName);
-      if (control instanceof FormControl) {
-        control.setValue(null);
-      }
-    });
-  }
-  
 }

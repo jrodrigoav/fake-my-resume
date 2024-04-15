@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { UtilsService } from '../../../services/utils/utils.service';
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { WorkExperience } from '../../../DTOs/WorkExperienceDTO';
 import { DatePipe, NgIf } from '@angular/common';
@@ -23,15 +22,15 @@ export class WorkExperienceComponent {
   @Input() workExperienceForm!: FormGroup;
   columnsToDisplayExperience: any[] = ['companyName', 'role', 'description', 'projectName', 'from', 'to', 'actions'];
  
-  constructor(private cd: ChangeDetectorRef, private utilsService : UtilsService) {
+  constructor(private cd: ChangeDetectorRef) {
 
   }
 
-  addExperience(){
+  addExperience() {
     if (this.workExperienceForm.valid) {
-      let experience: WorkExperience = this.utilsService.mapFormGroupToModel(this.workExperienceForm);
+      const experience: WorkExperience = this.workExperienceForm.value;
       this.resume.workExperience = [...this.resume.workExperience, experience];
-      this.utilsService.clearFormGroupValues(this.workExperienceForm);
+      this.workExperienceForm.reset();
     }
   }
 
