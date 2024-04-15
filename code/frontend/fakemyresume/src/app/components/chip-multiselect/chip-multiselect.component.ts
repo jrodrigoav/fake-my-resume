@@ -24,6 +24,7 @@ export class ChipMultiselectComponent {
   @Output() onItemSelected: EventEmitter<string> = new EventEmitter();
   inputControl = new FormControl();
   @Input() separatorKeyCodes: number[] = [ENTER, COMMA];
+  @Input() editable: boolean = false;
 
   @ViewChild("itemInput") input!: ElementRef<MatInput>;
 
