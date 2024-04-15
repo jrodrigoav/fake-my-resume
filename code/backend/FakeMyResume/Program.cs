@@ -4,6 +4,7 @@ using FakeMyResume.API.Configuration;
 using FakeMyResume.DTOs.FluentValidations;
 using FluentValidation;
 using FakeMyResume.Data;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -20,6 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     var connectionString = builder.Configuration.GetConnectionString("MyResume");
     builder.Services.AddSqlServer<MakeMyResumeDb>(connectionString);
+    builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration, "AzureAd");
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
@@ -50,6 +52,9 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
 
+    app.UseCors(AllowLocalhostCORSPolicy);
+    app.UseAuthentication();
+    app.UseAuthorization();
     app.MapControllers();
 }
 app.Run();
