@@ -102,18 +102,19 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   editCert(certification: string, event: MatChipEditedEvent) {
-    this.manageItem(event.value, this.certs, this.resume.technologies, 'edit', certification);
+    this.manageItem(event.value, this.certs, this.resume.certifications, 'edit', certification);
   }
 
   editTech(oldTech: string, event: MatChipEditedEvent) {
     this.manageItem(event.value, this.techs, this.resume.technologies, 'edit', oldTech);
   }
+
   removeMeth(meth: string): void {
     this.manageItem(meth, this.meths, this.resume.methodologies, 'remove');
   }
 
   removeCert(cert: string): void {
-    this.manageItem(cert, this.certs, this.resume.technologies, 'remove');
+    this.manageItem(cert, this.certs, this.resume.certifications, 'remove');
   }
 
   removeTech(tech: string): void {
