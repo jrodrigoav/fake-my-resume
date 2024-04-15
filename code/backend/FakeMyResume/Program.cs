@@ -6,6 +6,8 @@ using FluentValidation;
 using FakeMyResume.Data;
 using Microsoft.Identity.Web;
 
+const string AllowLocalhostCORSPolicy = "AllowLocalhostCORSPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddSpaStaticFiles(configure => configure.RootPath = "wwwroot");
@@ -21,6 +23,15 @@ var builder = WebApplication.CreateBuilder(args);
 
     var connectionString = builder.Configuration.GetConnectionString("MyResume");
     builder.Services.AddSqlServer<MakeMyResumeDb>(connectionString);
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(
+            name: AllowLocalhostCORSPolicy,
+            policy =>
+            {
+                policy.WithOrigins("http://localhost:4200");
+            });
+    });
     builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration, "AzureAd");
 
     builder.Services.AddControllers();
