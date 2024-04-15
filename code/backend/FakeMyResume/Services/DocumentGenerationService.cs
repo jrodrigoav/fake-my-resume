@@ -1,4 +1,4 @@
-using iText.IO.Image;
+﻿using iText.IO.Image;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
@@ -27,6 +27,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         var assemblyPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
         _assetsPath = System.IO.Path.Combine(assemblyPath, "Assets");
     }
+
     public Stream GenerateResumeInPDF(Resume resume)
     {
         #region Init
@@ -46,7 +47,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         var textTitleStyle = new Style();
         textTitleStyle.SetFont(font).SetBold().SetCharacterSpacing(2);
         var paragraphTitleStyle = new Style();
-        paragraphTitleStyle.SetFont(font).SetFontSize(12).SetFontColor(ColorConstants.DARK_GRAY);
+        paragraphTitleStyle.SetFont(font).SetFontSize(12).SetFontColor(ColorConstants.BLACK);
         var textDescription = new Style();
         textDescription.SetFont(font).SetFontSize(10).SetFontColor(ColorConstants.DARK_GRAY).SetTextAlignment(TextAlignment.JUSTIFIED);
         #endregion
@@ -130,6 +131,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         return ms;
         #endregion
     }
+
     private void addRectangleHeader(PdfDocument pdfDocument, PdfPage page)
     {
         PdfCanvas canvasHeaderRectangle = new PdfCanvas(pdfDocument.GetFirstPage());
@@ -138,6 +140,7 @@ public class DocumentGenerationService : IDocumentGenerationService
              .SetFillColor(greyColor)
              .Fill();
     }
+
     private void addTextHeader(PdfPage page, PdfFont font, string resumeFullName, string resumeEmail, string resumeCurrentRole)
     {
         Rectangle rectangle = new Rectangle(35, page.GetPageSize().GetTop(), 740, 150);
@@ -146,19 +149,21 @@ public class DocumentGenerationService : IDocumentGenerationService
         Text email = new Text(resumeEmail).SetFont(font);
         Text currentRole = new Text(resumeCurrentRole).SetFont(font);
 
-        canvasTextRectangle.ShowTextAligned(new Paragraph(fullName).SetFontSize(25).SetFontColor(ColorConstants.BLACK), 35, 790, TextAlignment.LEFT)
-            .ShowTextAligned(new Paragraph((currentRole).SetBold().SetCharacterSpacing(1)).SetFontSize(10).SetFontColor(blueColor), 35, 775, TextAlignment.LEFT)
-            .ShowTextAligned(new Paragraph(email).SetFontSize(10).SetFontColor(ColorConstants.DARK_GRAY), 35, 758, TextAlignment.LEFT)
+        canvasTextRectangle.ShowTextAligned(new Paragraph(fullName).SetFontSize(25).SetFontColor(ColorConstants.BLACK), 35, 800, TextAlignment.LEFT)
+            .ShowTextAligned(new Paragraph((currentRole).SetBold().SetCharacterSpacing(1)).SetFontSize(10).SetFontColor(blueColor), 35, 785, TextAlignment.LEFT)
+            .ShowTextAligned(new Paragraph(email).SetFontSize(10).SetFontColor(ColorConstants.DARK_GRAY), 35, 768, TextAlignment.LEFT)
             .Close();
     }
+
     private Image addImage()
     {
         string imagePath = System.IO.Path.Combine(_assetsPath, "logo_unosquare.PNG");
         ImageData logo = ImageDataFactory.Create(imagePath);
 
-        Image image = new Image(logo).ScaleAbsolute(130, 130).SetFixedPosition(1, 440, 735);
+        Image image = new Image(logo).Scale(0.4f, 0.4f).SetFixedPosition(1, 440, 760);
         return image;
     }
+
     private Paragraph addDescription(PdfFont font, string resumeDescription)
     {
         Paragraph description = new Paragraph(resumeDescription)
@@ -166,6 +171,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         description.SetMargin(10);
         return description;
     }
+
     private Table addWorkExperienceTable(Style textTitleStyle, Style tableTextStyle, Style textDescription, PdfFont font, WorkExperience workExperience)
     {
         float[] workExperienceWidth = { 800f };
@@ -204,6 +210,7 @@ public class DocumentGenerationService : IDocumentGenerationService
 
         return workExperienceTable;
     }
+
     private Table addProjectTable(Style tableTextStyle, Style textDescription, PdfFont font, Project project)
     {
         float[] columns = { 800 };
@@ -224,6 +231,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         projectTable.SetMarginTop(10);
         return projectTable;
     }
+
     private Table addEducationTable(Style textDescription, PdfFont font, Education education)
     {
         float[] educationWidth = { 800 };
@@ -265,6 +273,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         Cell technologiesCell = new Cell().SetBorder(Border.NO_BORDER).Add(techologiesCellTable);
         return technologiesCell;
     }
+
     private Cell addNestedTable(List<string> list, PdfFont font)
     {
         float[] columns = { 7, 400 };
@@ -279,6 +288,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         Cell result = new Cell().SetBorder(Border.NO_BORDER).Add(table);
         return result;
     }
+
     private Cell addNestedCell(bool isBullet, string value = "\u2022")
     {
         if (isBullet)
