@@ -11,8 +11,6 @@ public class MakeMyResumeDb : DbContext
 
     public  DbSet<User> User { get; set; }
 
-    public DbSet<Tag> Tag { get; set; }
-
     public MakeMyResumeDb(IConfiguration configuration) : base() 
     {
         _connection = configuration.GetConnectionString("MyResume");
@@ -32,12 +30,6 @@ public class MakeMyResumeDb : DbContext
             entity.HasOne(r => r.User)
                 .WithMany(u => u.Resumes)
                 .HasForeignKey(r => r.AccountId);
-        });
-
-        modelBuilder.Entity<Tag>(entity =>
-        {
-            entity.HasIndex(e => e.Name)
-                .IsUnique();
         });
     }
 }

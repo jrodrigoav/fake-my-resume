@@ -24,6 +24,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     var connectionString = builder.Configuration.GetConnectionString("MyResume");
     builder.Services.AddSqlServer<MakeMyResumeDb>(connectionString);
+    var tagsConnectionString = builder.Configuration.GetConnectionString("Tags");
+    builder.Services.AddSqlite<TagsDbContext>(tagsConnectionString);
     builder.Services.AddCors(options =>
     {
         options.AddPolicy(
