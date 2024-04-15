@@ -48,7 +48,9 @@ export class ResumesComponent implements OnDestroy {
       degree: new FormControl('', [Validators.required]),
       major: new FormControl('', [Validators.required]),
       universityName: new FormControl('', [Validators.required]),
-      yearOfCompletion: new FormControl('', [Validators.required])
+      yearOfCompletion: new FormControl('', [Validators.required]),
+      country: new FormControl('', [Validators.required]),
+      state: new FormControl('', [Validators.required]),
     });
 
     this.resumeService.getResumes().pipe(takeUntil(this.onDestroy$)).subscribe(resumes => {

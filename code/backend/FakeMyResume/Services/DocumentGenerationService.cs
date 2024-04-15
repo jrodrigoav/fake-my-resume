@@ -238,7 +238,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         float[] educationWidth = { 800 };
         Table educationTable = new Table(educationWidth);
 
-        string fullEducationTitle = $"{education.UniversityName} - {education.Major}";
+        string fullEducationTitle = $"{education.UniversityName}, {education.State}, {education.Country} - {education.Major}";
         string fullSubtitle = $"{education.Degree} - {education.YearOfCompletion}";
         var pFullEducation = new Paragraph(new Text(fullEducationTitle).SetFont(font).SetBold().SetCharacterSpacing(1).SetFontSize(11)).SetFontColor(blueColor);
         var pFullSubtitle = new Paragraph(new Text(fullSubtitle).SetFont(font).SetBold().SetCharacterSpacing(1).SetFontSize(8).SetFontColor(ColorConstants.BLACK).AddStyle(textDescription));

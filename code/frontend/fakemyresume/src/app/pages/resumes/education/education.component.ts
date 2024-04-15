@@ -20,7 +20,7 @@ export class EducationComponent {
   @Input() resume!: ResumeDTO;
   @Input() educationForm!: FormGroup;
 
-  displayedColumnsEducation: string[] = ['degree', 'major', 'universityName', 'yearOfCompletion', 'remove'];
+  displayedColumnsEducation: string[] = ['degree', 'major', 'universityName', 'yearOfCompletion', 'country', 'state', 'remove'];
 
   constructor(private utilsService: UtilsService) {
     

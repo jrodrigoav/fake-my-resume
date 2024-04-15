@@ -9,4 +9,8 @@ public class Education
     public string? UniversityName { get; set; }
 
     public string? YearOfCompletion { get; set; }
+
+    public string? Country { get; set; }
+
+    public string? State { get; set; }
 }
