@@ -13,6 +13,7 @@
     <None Remove="Assets\Segoe UI Bold.ttf" />
     <None Remove="Assets\Segoe UI Italic.ttf" />
     <None Remove="Assets\Segoe UI.ttf" />
+    <None Remove="stackexchangetags.sqlite" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +56,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Segoe UI.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="stackexchangetags.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
