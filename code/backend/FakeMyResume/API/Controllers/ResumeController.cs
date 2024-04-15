@@ -1,14 +1,16 @@
-﻿using AutoMapper;
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FakeMyResume.Data.Models;
 using FakeMyResume.DTOs;
 using FakeMyResume.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FakeMyResume.API.Controllers;
 
-[ApiController, Route("api/resume")]
+[ApiController, Authorize, Route("api/resume")]
 public class ResumeController : ControllerBase
 {
     private readonly IMapper _mapper;
@@ -22,10 +24,15 @@ public class ResumeController : ControllerBase
         _resumeService = resumeService;
     }
 
-
     [HttpPost]
     public IActionResult SaveResume(CreateResumeDTO resumeDTO)
     {
+        var currentUser = this.User;
+        var accountId = currentUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (accountId == null)
+            return new UnauthorizedResult();
+
         var validationResult = _validator.Validate(resumeDTO);
         if (!validationResult.IsValid)
         {
@@ -34,10 +41,9 @@ public class ResumeController : ControllerBase
         }
         var resume = _mapper.Map<Resume>(resumeDTO);
 
-        _resumeService.SaveResume(resume);
+        var newResume = _resumeService.SaveResume(resume, accountId);
 
-        return Created($"/api/resume/{resume.Id}", resume);
-
+        return Created($"/api/resume/{newResume.Id}", newResume);
     }
 
     [HttpGet("{id}")]

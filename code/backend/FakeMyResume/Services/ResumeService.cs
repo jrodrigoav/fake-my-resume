@@ -15,20 +15,20 @@ public class ResumeService : IResumeService
         _context = context;
         _documentGenerationService = documentGenerationService;
     }
-    public void SaveResume(Resume resume)
+
+    public Resume SaveResume(Resume resume, string accountId)
     {
         var dataResume = new DataResume
         {
-            AccountId = Guid.NewGuid().ToString(), //resume.AccountId;
-            JsonData = JsonSerializer.Serialize<Resume>(resume),
+            AccountId = accountId,
+            JsonData = JsonSerializer.Serialize(resume),
             CreatedDate = DateTime.UtcNow,
             LastUpdated = DateTime.UtcNow
         };
         _context.DataResume.Add(dataResume);
-
         _context.SaveChanges();
+        return GetResume(dataResume.Id);
     }
-
 
     public Resume? UpdateResume(Resume resume)
     {
