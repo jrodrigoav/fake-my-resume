@@ -1,8 +1,11 @@
-﻿namespace FakeMyResume.Data.Models;
+﻿using System.Text.Json;
+
+namespace FakeMyResume.Data.Models;
 
 public class Resume
 {
     public int Id { get; set; }
+
     public string AccountId { get; set; } = string.Empty;
 
     public string? FullName { get; set; }
@@ -22,4 +25,12 @@ public class Resume
     public List<WorkExperience>? WorkExperience { get; set; }
 
     public List<Education>? Education { get; set; }
+
+    public static Resume FromData(DataResume data)
+    {
+        var resume = JsonSerializer.Deserialize<Resume>(data.JsonData) ?? throw new NullReferenceException("Null reference of resume");
+        resume.Id = data.Id;
+        resume.AccountId = data.AccountId;
+        return resume;
+    }
 }

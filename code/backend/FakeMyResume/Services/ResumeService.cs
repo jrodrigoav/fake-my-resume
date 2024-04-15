@@ -1,4 +1,4 @@
-using FakeMyResume.Data;
+﻿using FakeMyResume.Data;
 using FakeMyResume.Data.Models;
 using FakeMyResume.Services.Interfaces;
 using System.Text.Json;
@@ -54,29 +54,22 @@ public class ResumeService : IResumeService
         return resume != null ? _documentGenerationService.GenerateResumeInPDF(resume) : null;
     }
 
-    private DataResume? FindResume(int id)
+    private DataResume FindResume(int id)
     {
-        return _context.DataResume.FirstOrDefault(x => x.Id == id);
+        return _context.DataResume.First(x => x.Id == id);
     }
 
-    public Resume? GetResume(int id)
+    public Resume GetResume(int id)
     {
-        DataResume? dataResume = FindResume(id);
-
-        Resume? resume = null;
-
-        if (dataResume != null)
-        {
-            resume = JsonSerializer.Deserialize<Resume>(dataResume.JsonData);
-        }
-        return resume;
+        var dataResume = FindResume(id);
+        return Resume.FromData(dataResume);
     }
 
     public IEnumerable<Resume> GetResumes(string accountId)
     {
         return _context.DataResume.Where(resume => resume.AccountId.Equals(accountId))
             .AsEnumerable()
-            .Select(resume => JsonSerializer.Deserialize<Resume>(resume.JsonData))
+            .Select(Resume.FromData)
             .Where(resume => resume != null)!;
     }
 }
