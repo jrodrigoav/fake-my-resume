@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FakeMyResume.Data.Models;
@@ -96,7 +96,7 @@ public class ResumeController(IMapper mapper, IValidator<CreateResumeDTO> valida
     }
 
     [HttpGet("dummy")]
-    public IActionResult GetDummy([FromServices] IDocumentGenerationService documentGenerationService)
+    public IActionResult GetDummy()
     {
         return File(documentGenerationService.GenerateResumeInPDF(new Resume()), "application/pdf");
     }
