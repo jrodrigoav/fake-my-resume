@@ -6,13 +6,13 @@ public class WorkExperience
 
     public DateTime DateEnd { get; set; }
 
-    public string? CompanyName { get; set; }
+    public string CompanyName { get; set; } = null!;
 
-    public string? ProjectName { get; set; }
+    public string ProjectName { get; set; } = null!;
 
-    public string? Role { get; set; }
+    public string Role { get; set; } = null!;
 
-    public string? Description { get; set; }
+    public string Description { get; set; } = null!;
 
     public List<string> Technologies { get; set; } = [];
 }

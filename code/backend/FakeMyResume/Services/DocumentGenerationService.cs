@@ -86,10 +86,10 @@ public class DocumentGenerationService : IDocumentGenerationService
         table.AddHeaderCell(techologiesCell);
         table.AddHeaderCell(certificationsCell);
         /// technologies table
-        var technologies = resume?.WorkExperience?.SelectMany(e => e.Technologies).Distinct().Order().ToList() ?? [];
+        var technologies = resume.WorkExperience?.SelectMany(e => e.Technologies).Distinct().Order().ToList() ?? [];
         table.AddCell(addNestedTableWithTwoColumns(technologies, font));
         /// certifications table
-        table.AddCell(addNestedTable(resume?.Certifications, font));
+        table.AddCell(addNestedTable(resume.Certifications, font));
         table.SetMargin(10);
         document.Add(table);
 

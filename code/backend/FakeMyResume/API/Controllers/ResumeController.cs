@@ -1,6 +1,4 @@
 using AutoMapper;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using FakeMyResume.Data.Models;
 using FakeMyResume.DTOs;
 using FakeMyResume.Services.Interfaces;
@@ -12,7 +10,7 @@ using System.Text.Json;
 namespace FakeMyResume.API.Controllers;
 
 [ApiController, Authorize, Route("api/resume")]
-public class ResumeController(IMapper mapper, IValidator<CreateResumeDTO> validator, IResumeService resumeService, IDocumentGenerationService documentGenerationService) : ControllerBase
+public class ResumeController(IMapper mapper, IResumeService resumeService, IDocumentGenerationService documentGenerationService) : ControllerBase
 {
     [HttpGet]
     public IActionResult GetAccountResumes()
@@ -56,17 +54,11 @@ public class ResumeController(IMapper mapper, IValidator<CreateResumeDTO> valida
     [HttpPost]
     public IActionResult SaveResume(CreateResumeDTO resumeDTO)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (accountId == null)
             return new UnauthorizedResult();
-
-        var validationResult = validator.Validate(resumeDTO);
-        if (!validationResult.IsValid)
-        {
-            validationResult.AddToModelState(ModelState);
-            return BadRequest(ModelState);
-        }
         var resume = mapper.Map<Resume>(resumeDTO);
 
         var newResume = resumeService.SaveResume(resume, accountId);
@@ -77,12 +69,6 @@ public class ResumeController(IMapper mapper, IValidator<CreateResumeDTO> valida
     [HttpPut("{id}")]
     public IActionResult UpdateResume(int id, [FromBody] UpdateResumeDTO resumeDTO)
     {
-        var validationResult = validator.Validate(resumeDTO);
-        if (!validationResult.IsValid)
-        {
-            validationResult.AddToModelState(ModelState);
-            return BadRequest(ModelState);
-        }
         var resume = mapper.Map<Resume>(resumeDTO);
 
         var updatedResume = resumeService.UpdateResume(id, resume);

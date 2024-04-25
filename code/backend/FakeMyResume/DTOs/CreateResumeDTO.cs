@@ -1,16 +1,24 @@
-﻿namespace FakeMyResume.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FakeMyResume.DTOs;
 
 public class CreateResumeDTO
 {
-    public string? FullName { get; set; }
+    [Required(ErrorMessage = "FullName is required")]
+    [MaxLength(150, ErrorMessage = "FullName cannot exceed 150 characters")]
+    public string FullName { get; set; } = null!;
 
-    public string? CurrentRole { get; set; }
+    [Required(ErrorMessage = "CurrentRole is required")]
+    public string CurrentRole { get; set; } = null!;
 
-    public string? Description { get; set; }
+    [Required(ErrorMessage = "Description is required")]
+    [MaxLength(1000, ErrorMessage = "Description cannot exceed 1000 characters")]
+    public string Description { get; set; } = null!;
 
     public List<string> Certifications { get; set; } = [];
 
-    public List<WorkExperienceDTO>? WorkExperience { get; set; }
+    [Required(ErrorMessage = "WorkExperience is required")]
+    public List<WorkExperienceDTO> WorkExperience { get; set; } = null!;
 
     public List<EducationDTO>? Education { get; set; }
 }

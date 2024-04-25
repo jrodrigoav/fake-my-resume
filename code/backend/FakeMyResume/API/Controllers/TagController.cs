@@ -20,6 +20,7 @@ public class TagController(ITagService tagService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateTags(IEnumerable<CreateTagDTO> tags)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         try
         {
             var newTags = tags.Select(t => new Tag { Name = t.Name });

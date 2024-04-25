@@ -1,8 +1,6 @@
 using FakeMyResume.Services.Interfaces;
 using FakeMyResume.Services;
 using FakeMyResume.API.Configuration;
-using FakeMyResume.DTOs.FluentValidations;
-using FluentValidation;
 using FakeMyResume.Data;
 using Microsoft.Identity.Web;
 using FakeMyResume.Models;
@@ -17,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddSpaStaticFiles(configure => configure.RootPath = "wwwroot");
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddValidatorsFromAssemblyContaining<ResumeDTOValidator>();
     builder.Services.AddAutoMapper(typeof(MapperConfigurationProfile));
 
     builder.Services.AddScoped<IResumeService, ResumeService>();
@@ -68,7 +65,7 @@ var app = builder.Build();
 {
     app.UseDefaultFiles(new DefaultFilesOptions
     {
-        DefaultFileNames = new List<string> { "index.html" }
+        DefaultFileNames = ["index.html"]
     });
 
     const string cacheMaxAge = "720";
@@ -81,7 +78,7 @@ var app = builder.Build();
         }
     });
     app.MapGet("/api", () => "FakeMyResume");
-    app.UseSpa(configuration => configuration.Options.DefaultPage = new Microsoft.AspNetCore.Http.PathString("/index.html"));
+    app.UseSpa(configuration => configuration.Options.DefaultPage = new PathString("/index.html"));
 
     if (app.Environment.IsDevelopment())
     {
