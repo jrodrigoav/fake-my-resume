@@ -23,11 +23,11 @@ internal class ImporterService
         _context = context;
     }
 
-    public async Task ImportAsync()
+    public async Task<int> ImportAsync(int page, int maxPages)
     {
         var hasmore = false;
-        var page = 1;
         var pageSize = 100;
+        var lastPage = page + maxPages;
         do
         {
             var tagsResponse = await GetTagsPage(page, pageSize);
@@ -36,10 +36,11 @@ internal class ImporterService
             var existingTagNames = _context.Tags.Where(t => validTagNames.Contains(t.Name)).Select(t => t.Name).ToList();
             foreach (var validTag in validTags)
             {
-                if(existingTagNames.Contains(validTag.Name))
+                if (existingTagNames.Contains(validTag.Name))
                 {
                     _context.Tags.Update(validTag);
-                } else
+                }
+                else
                 {
                     _context.Tags.Add(validTag);
                 }
@@ -47,18 +48,16 @@ internal class ImporterService
 
             // Ends if the page filtered at least one element or no elements are found
             hasmore = validTags.Count() == pageSize && tagsResponse.HasMore;
-            _logger.LogInformation("Imported page {page}", page);
+            page++;
 
             if (tagsResponse.QuotaRemaining < 10)
             {
                 _logger.LogWarning("Quota dangerously low");
                 break;
             }
-
-            page++;
-        }
-        while (hasmore);
+        } while (page < lastPage && hasmore);
         await _context.SaveChangesAsync();
+        return hasmore ? page : 1;
     }
 
     private async Task<StackExchangeTagsResponse> GetTagsPage(int page, int pageSize)

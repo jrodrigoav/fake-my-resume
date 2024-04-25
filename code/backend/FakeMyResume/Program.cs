@@ -8,6 +8,7 @@ using Microsoft.Identity.Web;
 using FakeMyResume.Models;
 using FakeMyResume.Jobs;
 using System.Net;
+using Quartz;
 
 const string AllowLocalhostCORSPolicy = "AllowLocalhostCORSPolicy";
 
@@ -25,6 +26,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IUserService, UserService>();
 
     // Jobs
+    builder.Services.Configure<QuartzOptions>(builder.Configuration.GetSection(nameof(QuartzOptions)));
+    builder.Services.Configure<QuartzOptions>(options =>
+    {
+        options.Scheduling.IgnoreDuplicates = true;
+        options.Scheduling.OverWriteExistingData = true;
+    });
+
     builder.Services.AddScoped<ImporterService>();
     builder.Services.AddHttpClient<ImporterService>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
     {
