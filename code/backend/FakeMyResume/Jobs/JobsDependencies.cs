@@ -15,8 +15,7 @@ public static class JobsDependencies
                 {
                     builder.UsingJobData("nextPage", 1);
                 })
-                .AddTrigger(trigger => trigger.ForJob(udpdateTagsJobKey)
-                    .WithCronSchedule("0 0 1,21,23 ? * * *").StartNow());
+                .AddTrigger(trigger => trigger.WithIdentity("DailyTrigger").WithCronSchedule("0 0 1,21,23 * * ?").ForJob(udpdateTagsJobKey));
         });
 
         // ASP.NET Core hosting
