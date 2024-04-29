@@ -26,11 +26,17 @@ public class ResumeController(IMapper mapper, IResumeService resumeService, IDoc
     [HttpGet("{id}")]
     public IActionResult GetResume(int id)
     {
+        var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var resume = resumeService.GetResume(id);
 
         if (resume == null)
         {
             return NotFound();
+        }
+
+        if(!resume.AccountId.Equals(accountId))
+        {
+            return Unauthorized($"The requested resume belongs to another user.");
         }
 
         var result = ResumeDTO.FromData(resume);

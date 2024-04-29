@@ -1,0 +1,10 @@
+.action-buttons {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.table-empty-message {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}

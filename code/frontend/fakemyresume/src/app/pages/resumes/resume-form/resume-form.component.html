@@ -1,0 +1,28 @@
+<div class="container" *ngIf="resume">
+    <button type="button" (click)="back()" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <mat-stepper [linear]="true" #stepper>
+        <mat-step [stepControl]="resumeForm">
+            <ng-template matStepLabel>Personal Information</ng-template>
+            <app-personal-information [resume]="resume" [resumeForm]="resumeForm"></app-personal-information>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Work Experience</ng-template>
+            <app-work-experience [resume]="resume" [workExperienceForm]="workExperienceForm"></app-work-experience>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Education</ng-template>
+            <app-education [resume]="resume" [educationForm]="educationForm"></app-education>
+            @if(!resume.id) {
+                <button class="submit-unosquare" type="button" (click)="submit()" mat-raised-button>Submit</button>
+            } @else {
+                <button class="submit-unosquare" type="button" (click)="update()" mat-raised-button>Update</button>
+            }
+        </mat-step>
+    </mat-stepper>
+</div>

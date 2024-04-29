@@ -22,7 +22,7 @@ export class MakeMyResumeService {
   }
 
   public getResume(id: string) {
-    return this.httpClient.get(this.resourceUrl(id));
+    return this.httpClient.get<ResumeDTO>(this.resourceUrl(id));
   }
 
   public getResumePdF(resumeId: number) {
