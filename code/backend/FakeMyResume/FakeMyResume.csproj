@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Betalgo.OpenAI" Version="8.1.1" />
+    <PackageReference Include="Betalgo.OpenAI.Utilities" Version="8.0.1" />
     <PackageReference Include="itext" Version="8.0.3" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.3" />

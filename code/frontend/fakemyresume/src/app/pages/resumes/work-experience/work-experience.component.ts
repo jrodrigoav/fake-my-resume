@@ -14,11 +14,12 @@ import { ChipMultiselectComponent } from '../../../components/chip-multiselect/c
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { WorkExperience } from '../../../DTOs/WorkExperienceDTO';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TextFormatButtonComponent } from '../../../components/text-format-button/text-format-button.component';
 
 @Component({
   selector: 'app-work-experience',
   standalone: true,
-  imports: [NgIf, AsyncPipe, DatePipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule, MatIconModule, DragDropModule, ChipMultiselectComponent],
+  imports: [NgIf, AsyncPipe, DatePipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepicker, MatDatepickerModule, MatTableModule, MatIconModule, DragDropModule, ChipMultiselectComponent, TextFormatButtonComponent],
   templateUrl: './work-experience.component.html',
   styleUrls: ['./work-experience.component.css']
 })

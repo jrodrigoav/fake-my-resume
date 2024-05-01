@@ -7,11 +7,12 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { ChipMultiselectComponent } from '../../../components/chip-multiselect/chip-multiselect.component';
+import { TextFormatButtonComponent } from '../../../components/text-format-button/text-format-button.component';
 
 @Component({
   selector: 'app-personal-information',
   standalone: true,
-  imports: [NgFor, AsyncPipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatChipsModule, MatIconModule, ChipMultiselectComponent],
+  imports: [NgFor, AsyncPipe, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatChipsModule, MatIconModule, ChipMultiselectComponent, TextFormatButtonComponent],
   templateUrl: './personal-information.component.html',
   styleUrls: ['./personal-information.component.css']
 })

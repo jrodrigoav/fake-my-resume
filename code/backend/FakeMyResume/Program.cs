@@ -7,6 +7,7 @@ using FakeMyResume.Models;
 using FakeMyResume.Jobs;
 using System.Net;
 using Quartz;
+using OpenAI.Extensions;
 
 const string AllowLocalhostCORSPolicy = "AllowLocalhostCORSPolicy";
 
@@ -21,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IDocumentGenerationService, DocumentGenerationService>();
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<ITextService, TextService>();
 
     // Jobs
     builder.Services.Configure<QuartzOptions>(builder.Configuration.GetSection(nameof(QuartzOptions)));
@@ -56,6 +58,8 @@ var builder = WebApplication.CreateBuilder(args);
             });
     });
     builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration, "AzureAd");
+
+    builder.Services.AddOpenAIService();
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
