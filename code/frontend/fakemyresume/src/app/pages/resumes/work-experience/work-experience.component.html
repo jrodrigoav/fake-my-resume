@@ -1,0 +1,110 @@
+<form [formGroup]="workExperienceForm">
+    <ng-template matStepLabel>Work Experience</ng-template>
+    <div class="form-group">
+        <div class="full-width">
+            <mat-form-field>
+                <mat-label>Company Name</mat-label>
+                <input #companyName formControlName="companyName" matInput type="text">
+            </mat-form-field>
+        </div>
+        <div class="full-width">
+            <mat-form-field>
+                <mat-label>Project Name</mat-label>
+                <input #projectName formControlName="projectName" matInput type="text">
+            </mat-form-field>
+        </div>
+        <div class="full-width">
+            <mat-form-field>
+                <mat-label>Role Name</mat-label>
+                <input #roleName formControlName="role" matInput type="text">
+            </mat-form-field>
+        </div>
+        <div class="form-group full-width">
+            <mat-form-field>
+                <mat-label>Role Description</mat-label>
+                <textarea #roleDescription formControlName="description" matInput></textarea>
+            </mat-form-field>
+            <app-text-format-button></app-text-format-button>
+        </div>
+        <div class="form-group">
+          <app-chip-multiselect (onInputChange)="inputChanges.next($event)" label="Technologies" placeholder="Add new technology..." [options]="filteredTechs | async" [formArray]="technologiesControl" [separatorKeyCodes]="[]">
+          </app-chip-multiselect>
+        </div>
+        <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="pickerBegin" formControlName="dateBegin">
+            <mat-datepicker-toggle matSuffix [for]="pickerBegin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerBegin startView="multi-year" 
+              (monthSelected)="chosenMonthHandler('dateBegin',$event, pickerBegin)">
+            </mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="pickerEnd" formControlName="dateEnd">
+            <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd startView="multi-year" 
+              (monthSelected)="chosenMonthHandler('dateEnd',$event, pickerEnd)">
+            </mat-datepicker>
+        </mat-form-field>
+        <div class="full-width">
+            <button mat-raised-button (click)="addExperience()">Add</button>
+        </div>
+    </div>
+    <div *ngIf="resume.workExperience.length">
+        <table mat-table cdkDropList (cdkDropListDropped)="onListDrop($event)" [dataSource]="resume.workExperience" class="mat-elevation-z8 draggable-table">
+            <ng-container matColumnDef="drag">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon cdkDragHandle
+                  (touchstart)="dragDisabled = false" (touchend)="dragDisabled = true"
+                  (mousedown)="dragDisabled = false" (mouseup)="dragDisabled = true">
+                  drag_indicator
+                </mat-icon>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="companyName">
+              <th mat-header-cell *matHeaderCellDef> Company Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef> Role </th>
+              <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+            <ng-container matColumnDef="projectName">
+              <th mat-header-cell *matHeaderCellDef> Nombre de Proyecto </th>
+              <td mat-cell *matCellDef="let element"> {{element.projectName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="technologies">
+              <th mat-header-cell *matHeaderCellDef> Tecnologias </th>
+              <td mat-cell *matCellDef="let element"> {{element.technologies?.join(', ')}} </td>
+            </ng-container>
+            <ng-container matColumnDef="from">
+                <th mat-header-cell *matHeaderCellDef> Fecha Inicio</th>
+                <td mat-cell *matCellDef="let element"> {{element.dateBegin | date: 'MMM y'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="to">
+                <th mat-header-cell *matHeaderCellDef> Fecha Fin </th>
+                <td mat-cell *matCellDef="let element"> {{element.dateEnd | date: 'MMM y'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                      <button mat-icon-button (click)="removeRow(i)">
+                          <mat-icon>delete</mat-icon>
+                      </button>
+                  </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayExperience"></tr>
+            <tr mat-row cdkDrag [cdkDragData]="row" [cdkDragDisabled]="dragDisabled" (cdkDragReleased)="dragDisabled = true" *matRowDef="let row; columns: columnsToDisplayExperience;"></tr>
+          </table>
+    </div>
+    <div hidden>
+        <input matInput name="workExperience">
+    </div>
+</form>
+
+
+

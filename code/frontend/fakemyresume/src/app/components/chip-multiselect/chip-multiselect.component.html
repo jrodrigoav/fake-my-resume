@@ -1,0 +1,24 @@
+
+<mat-form-field>
+    <mat-label>{{ label }}</mat-label>
+    <mat-chip-grid #chipGrid>
+        <mat-chip-row *ngFor="let item of formArray.controls; let i=index" [editable]="editable" (edited)="editItem(i, $event)" (removed)="removeItem(i)">
+            {{ item.value }}
+            <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+            </button>
+        </mat-chip-row>
+    </mat-chip-grid>
+    <input #itemInput matInput type="text" [placeholder]="placeholder"
+        [formControl]="inputControl" [matAutocomplete]="autoComplete"
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+        (matChipInputTokenEnd)="addItem($event)" />
+    <mat-autocomplete #autoComplete (optionSelected)="onItemSelect($event)">
+        @if(options?.length) {
+            <mat-option *ngFor="let option of options" [value]="option">
+                {{ option }}
+            </mat-option>
+        }
+    </mat-autocomplete>
+</mat-form-field>

@@ -1,0 +1,25 @@
+<form [formGroup]="resumeForm">
+    <ng-template matStepLabel>General Information</ng-template>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Full Name</mat-label>
+            <input placeholder="Ex. Juan Perez" matInput type="text"  name="fullName" formControlName="fullName">
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Current Role</mat-label>
+            <input matInput placeholder="Ex. Software Developer" type="text"  name="currentRole" formControlName="currentRole">
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Ex. Development and maintanance of API's with... " name="description" formControlName="description"></textarea>
+        </mat-form-field>
+        <app-text-format-button [value]="resumeForm.controls['description'].value"></app-text-format-button>
+    </div>
+    <div class="form-group">
+        <app-chip-multiselect [editable]="true" label="Certifications" placeholder="Add new certification..." [formArray]="certificationsControl"></app-chip-multiselect>
+    </div>
+</form>
