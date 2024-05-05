@@ -4,10 +4,7 @@
 
 export const environment = {
     production: false,
-    apiUrl: "https://localhost:7127/api",
-    unicornRewardsApiUrl: "https://localhost:7127/api",
-    makeMyResumeApiUrl: "https://localhost:7127/api/resume",
-    techTagsUrl: "https://localhost:7127/api/tag",
+    apiUrl: "https://localhost:7121/api",
     msalAuth:{
         clientId: "4186cd96-2142-430d-bfd3-2ff7b64a2c05",
         authority: "https://login.microsoftonline.com/eedd1340-df1a-4db2-8a03-b4cfb1fa3e9d",

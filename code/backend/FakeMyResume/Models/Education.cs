@@ -1,4 +1,4 @@
-﻿namespace FakeMyResume.Data.Models;
+﻿namespace FakeMyResume.Models;
 
 public class Education
 {

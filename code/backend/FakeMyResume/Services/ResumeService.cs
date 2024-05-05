@@ -1,15 +1,14 @@
-﻿using FakeMyResume.Data;
-using FakeMyResume.Data.Models;
-using FakeMyResume.Services.Interfaces;
-using System.Text.Json;
+﻿using FakeMyResume.Models;
+using FakeMyResume.Models.Data;
+using FakeMyResume.Services.Data;
 
 namespace FakeMyResume.Services;
 
-public class ResumeService : IResumeService
+public class ResumeService
 {
-    private readonly MakeMyResumeDb _context;
+    private readonly FakeMyResumeDbContext _context;
 
-    public ResumeService(MakeMyResumeDb context)
+    public ResumeService(FakeMyResumeDbContext context)
     {
         _context = context;
     }
@@ -19,17 +18,17 @@ public class ResumeService : IResumeService
         return _context.DataResume.First(x => x.Id == id);
     }
 
-    public IEnumerable<DataResume> GetResumes(string accountId)
+    public IEnumerable<DataResume> GetResumes(string userId)
     {
-        return _context.DataResume.Where(resume => resume.AccountId.Equals(accountId));
+        return _context.DataResume.Where(resume => resume.UserId.Equals(userId));
     }
 
     public DataResume SaveResume(Resume resume, string accountId)
     {
         var dataResume = new DataResume
         {
-            AccountId = accountId,
-            JsonData = JsonSerializer.Serialize(resume),
+            UserId = accountId,
+            ResumeData = resume,
             CreatedDate = DateTime.UtcNow,
             LastUpdated = DateTime.UtcNow
         };
@@ -41,7 +40,7 @@ public class ResumeService : IResumeService
     public DataResume UpdateResume(int id, Resume resume)
     {
         var dataResume = GetResume(id);
-        dataResume.JsonData = JsonSerializer.Serialize(resume);
+        dataResume.ResumeData = resume;
         dataResume.LastUpdated = DateTime.UtcNow;
         _context.DataResume.Update(dataResume);
         _context.SaveChanges();

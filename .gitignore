@@ -367,3 +367,6 @@ FodyWeavers.xsd
 wwwroot/
 package-lock.json
 .angular/
+fake-my-resume.sqlite
+development_cert.key
+development_cert.pem

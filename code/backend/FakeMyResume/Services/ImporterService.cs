@@ -1,77 +1,54 @@
-﻿using FakeMyResume.Data;
-using FakeMyResume.Models;
+﻿using FakeMyResume.Models;
+using FakeMyResume.Models.StackExchange;
+using FakeMyResume.Services.Data;
 using Microsoft.Extensions.Options;
+using Quartz;
 using System.Net;
 
 namespace FakeMyResume.Services;
 
-internal class ImporterService
+internal class ImporterService : IJob
 {
-    private readonly string _key;
+    private readonly StackExchangeSettings _settings;
     private readonly ILogger<ImporterService> _logger;
     private readonly HttpClient _client;
-    private readonly TagsDbContext _context;
+    private readonly FakeMyResumeDbContext _context;
 
-    public ImporterService(HttpClient client, ILogger<ImporterService> logger, IOptionsMonitor<StackExchangeSettings> optionsMonitor, TagsDbContext context)
+    public ImporterService(HttpClient client, ILogger<ImporterService> logger, IOptionsMonitor<StackExchangeSettings> optionsMonitor, FakeMyResumeDbContext context)
     {
         _client = client;
-        _client.BaseAddress = optionsMonitor.CurrentValue.Url;
+        _settings = optionsMonitor.CurrentValue;
+        _client.BaseAddress = _settings.Url;
+        _client.DefaultRequestHeaders.Remove("Accept");
         _client.DefaultRequestHeaders.Add("Accept", "application/json");
         _client.Timeout = TimeSpan.FromSeconds(90);
-        _key = optionsMonitor.CurrentValue.Key;
         _logger = logger;
         _context = context;
     }
 
-    public async Task<int> ImportAsync(int page, int maxPages)
+    public async Task Execute(IJobExecutionContext context)
     {
-        var hasmore = false;
-        var pageSize = 100;
-        var lastPage = page + maxPages;
-        do
+        var lastPage = _context.AppConfigs.Find(1);
+        if (lastPage != null)
         {
-            var tagsResponse = await GetTagsPage(page, pageSize);
-            var validTags = tagsResponse.Items.Where(c => c.Count > 300);
-            var validTagNames = validTags.Select(vt => vt.Name);
-            var existingTagNames = _context.Tags.Where(t => validTagNames.Contains(t.Name)).Select(t => t.Name).ToList();
-            foreach (var validTag in validTags)
+            var source_tags = await GetTagsPageAsync(lastPage.Page ?? 1);
+            await _context.UpsertTagsFromSourceAsync(source_tags);
+            if (source_tags.Any(t => t.Count <= 300))
             {
-                if (existingTagNames.Contains(validTag.Name))
-                {
-                    _context.Tags.Update(validTag);
-                }
-                else
-                {
-                    _context.Tags.Add(validTag);
-                }
+                lastPage.Page = 1;
             }
-
-            // Ends if the page filtered at least one element or no elements are found
-            hasmore = validTags.Count() == pageSize && tagsResponse.HasMore;
-            page++;
-
-            if (tagsResponse.QuotaRemaining < 10)
+            else
             {
-                _logger.LogWarning("Quota dangerously low");
-                break;
+                lastPage.Page += 1;
             }
-        } while (page < lastPage && hasmore);
-        await _context.SaveChangesAsync();
-        return hasmore ? page : 1;
+            lastPage.LastUpdated = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
     }
 
-    private async Task<StackExchangeTagsResponse> GetTagsPage(int page, int pageSize)
+    private async Task<Tag[]> GetTagsPageAsync(int page)
     {
-        StackExchangeTagsResponse? tagsResponse = null;
-        try
-        {
-            tagsResponse = await _client.GetFromJsonAsync<StackExchangeTagsResponse>($"tags?pagesize={pageSize}&order=desc&page={page}&site=stackoverflow&key={_key}");
-        }
-        catch (WebException httpRequestException)
-        {
-            _logger.LogError(httpRequestException, "WebException");
-        }
-        ArgumentNullException.ThrowIfNull(tagsResponse);
-        return tagsResponse;
+        var response = await _client.GetFromJsonAsync<TagsResponse>($"tags?pagesize=100&order=desc&page={page}&site=stackoverflow&key={_settings.Key}");
+        return response?.Items ?? [];
     }
 }

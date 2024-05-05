@@ -5,20 +5,20 @@ namespace FakeMyResume.DTOs;
 public class CreateResumeDTO
 {
     [Required(ErrorMessage = "FullName is required")]
-    [MaxLength(150, ErrorMessage = "FullName cannot exceed 150 characters")]
-    public string FullName { get; set; } = null!;
+    [StringLength(250, ErrorMessage = "FullName cannot exceed 250 characters")]
+    public string FullName { get; init; } = null!;
 
     [Required(ErrorMessage = "CurrentRole is required")]
-    public string CurrentRole { get; set; } = null!;
+    public string CurrentRole { get; init; } = null!;
 
     [Required(ErrorMessage = "Description is required")]
-    [MaxLength(1000, ErrorMessage = "Description cannot exceed 1000 characters")]
-    public string Description { get; set; } = null!;
+    [StringLength(1500, ErrorMessage = "Description cannot exceed 1500 characters")]
+    public string Description { get; init; } = null!;
 
-    public List<string> Certifications { get; set; } = [];
+    public List<string> Certifications { get; init; } = [];
 
     [Required(ErrorMessage = "WorkExperience is required")]
-    public List<WorkExperienceDTO> WorkExperience { get; set; } = null!;
+    public WorkExperienceDTO[] WorkExperience { get; init; }=[];
 
-    public List<EducationDTO>? Education { get; set; }
+    public EducationDTO[] Education { get; init; } = [];
 }

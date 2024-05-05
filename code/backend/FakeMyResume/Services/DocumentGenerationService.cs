@@ -1,4 +1,5 @@
-﻿using iText.IO.Image;
+﻿using FakeMyResume.Models;
+using iText.IO.Image;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
@@ -9,14 +10,12 @@ using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using FakeMyResume.Data.Models;
-using FakeMyResume.Services.Interfaces;
-using System.Reflection;
 using System.Globalization;
+using System.Reflection;
 
 namespace FakeMyResume.Services;
 
-public class DocumentGenerationService : IDocumentGenerationService
+public class DocumentGenerationService
 {
     private readonly string _assetsPath;
     private readonly Color greyColor = new DeviceCmyk(0, 0, 0, 5);
@@ -89,7 +88,7 @@ public class DocumentGenerationService : IDocumentGenerationService
         var technologies = resume.WorkExperience?.SelectMany(e => e.Technologies).Distinct().Order().ToList() ?? [];
         table.AddCell(addNestedTableWithTwoColumns(technologies, font));
         /// certifications table
-        table.AddCell(addNestedTable(resume.Certifications, font));
+        table.AddCell(addNestedTable(resume.Certifications.ToList(), font));
         table.SetMargin(10);
         document.Add(table);
 
@@ -100,10 +99,10 @@ public class DocumentGenerationService : IDocumentGenerationService
         var workExperience = new Paragraph(new Text("WORK EXPERIENCE").AddStyle(sectionTitleStyle)).SetMarginTop(10);
         document.Add(workExperience);
 
-        resume.WorkExperience?.ForEach(we =>
+        foreach(var we in resume.WorkExperience)
         {
             document.Add(addWorkExperienceTable(textTitleStyle, textDescription, boldFont, boldItalicFont, we));
-        });
+        }
 
         #endregion
 
@@ -112,10 +111,10 @@ public class DocumentGenerationService : IDocumentGenerationService
         var education = new Paragraph(new Text("EDUCATION").AddStyle(sectionTitleStyle)).SetMarginTop(10);
         document.Add(education);
 
-        resume.Education?.ForEach(e =>
+        foreach(var e in resume.Education)
         {
             document.Add(addEducationTable(textTitleStyle, e));
-        });
+        }
 
         #endregion
 

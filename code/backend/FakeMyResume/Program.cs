@@ -1,51 +1,49 @@
-using FakeMyResume.Services.Interfaces;
-using FakeMyResume.Services;
-using FakeMyResume.API.Configuration;
-using FakeMyResume.Data;
-using Microsoft.Identity.Web;
 using FakeMyResume.Models;
-using FakeMyResume.Jobs;
-using System.Net;
-using Quartz;
+using FakeMyResume.Services;
+using FakeMyResume.Services.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using OpenAI.Extensions;
+using Quartz;
+using Quartz.Impl.AdoJobStore;
+using System.Net;
 
 const string AllowLocalhostCORSPolicy = "AllowLocalhostCORSPolicy";
 
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddSpaStaticFiles(configure => configure.RootPath = "wwwroot");
-    builder.Services.AddSwaggerGen();
 
-    builder.Services.AddAutoMapper(typeof(MapperConfigurationProfile));
+    builder.Services.AddDbContext<FakeMyResumeDbContext>(configure => configure.UseSqlite(builder.Configuration.GetConnectionString("FakeMyResumeDB")!));
+    builder.Services.AddScoped<ResumeService>();
+    builder.Services.AddScoped<DocumentGenerationService>();
+    builder.Services.AddScoped<TagService>();
+    builder.Services.AddScoped<UserService>();
+    builder.Services.AddScoped<TextService>();
 
-    builder.Services.AddScoped<IResumeService, ResumeService>();
-    builder.Services.AddScoped<IDocumentGenerationService, DocumentGenerationService>();
-    builder.Services.AddScoped<ITagService, TagService>();
-    builder.Services.AddScoped<IUserService, UserService>();
-    builder.Services.AddScoped<ITextService, TextService>();
-
-    // Jobs
-    builder.Services.Configure<QuartzOptions>(builder.Configuration.GetSection(nameof(QuartzOptions)));
-    builder.Services.Configure<QuartzOptions>(options =>
-    {
-        options.Scheduling.IgnoreDuplicates = true;
-        options.Scheduling.OverWriteExistingData = true;
+    builder.Services.AddQuartz(q =>
+    {        
+        q.UsePersistentStore(c =>
+        {            
+            c.UseNewtonsoftJsonSerializer();
+            c.UseMicrosoftSQLite(builder.Configuration.GetConnectionString("FakeMyResumeDB")!);
+        });
+        var jobKey = new JobKey("TagImporterService");
+        q.AddJob<ImporterService>(opts => opts.WithIdentity(jobKey).DisallowConcurrentExecution(true).RequestRecovery(false));
+        q.AddTrigger(opts => opts.ForJob(jobKey).WithIdentity("TagImporterService-trigger").WithCronSchedule("0 0/5 * ? * *"));
     });
-
-    builder.Services.AddScoped<ImporterService>();
+    
+    builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+    
     builder.Services.AddHttpClient<ImporterService>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
     {
         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
     });
 
-    builder.Configuration.AddUserSecrets<StackExchangeSettings>();
+    
     builder.Services.Configure<StackExchangeSettings>(builder.Configuration.GetSection(nameof(StackExchangeSettings)));
-    builder.Services.AddJobs();
 
-    var connectionString = builder.Configuration.GetConnectionString("MyResume");
-    builder.Services.AddSqlServer<MakeMyResumeDb>(connectionString);
-    var tagsConnectionString = builder.Configuration.GetConnectionString("Tags");
-    builder.Services.AddSqlite<TagsDbContext>(tagsConnectionString);
+
     builder.Services.AddCors(options =>
     {
         options.AddPolicy(
@@ -54,7 +52,7 @@ var builder = WebApplication.CreateBuilder(args);
             {
                 policy.AllowAnyMethod();
                 policy.WithHeaders("Authorization", "Accept", "Referer", "User-Agent", "Content-Type");
-                policy.WithOrigins("http://localhost:4200");
+                policy.WithOrigins("https://localhost:7122");
             });
     });
     builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration, "AzureAd");
@@ -62,7 +60,6 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddOpenAIService();
 
     builder.Services.AddControllers();
-    builder.Services.AddEndpointsApiExplorer();
 
 }
 var app = builder.Build();
@@ -81,18 +78,12 @@ var app = builder.Build();
                 "Cache-Control", $"public, max-age={cacheMaxAge}");
         }
     });
-    app.MapGet("/api", () => "FakeMyResume");
-    app.UseSpa(configuration => configuration.Options.DefaultPage = new PathString("/index.html"));
-
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
 
     app.UseCors(AllowLocalhostCORSPolicy);
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
+    app.MapGet("/api", () => "FakeMyResume");
+    app.UseSpa(configuration => configuration.Options.DefaultPage = new PathString("/index.html"));
 }
 app.Run();
