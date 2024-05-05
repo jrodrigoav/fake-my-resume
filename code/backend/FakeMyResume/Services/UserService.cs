@@ -1,11 +1,10 @@
-﻿using FakeMyResume.Data;
-using FakeMyResume.Data.Models;
-using FakeMyResume.Services.Interfaces;
+﻿using FakeMyResume.Models.Data;
+using FakeMyResume.Services.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace FakeMyResume.Services;
 
-public class UserService(MakeMyResumeDb context) : IUserService
+public class UserService(FakeMyResumeDbContext context)
 {
     public async Task<User> GetUserByIdAsync(string id)
     {

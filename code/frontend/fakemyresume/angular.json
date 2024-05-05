@@ -64,7 +64,10 @@
               "buildTarget": "fakemyresume:build:production"
             },
             "development": {
-              "buildTarget": "fakemyresume:build:development"
+              "buildTarget": "fakemyresume:build:development",
+              "sslKey": "../../../development_cert.key",
+              "sslCert": "../../../development_cert.pem",
+              "ssl": true
             }
           },
           "defaultConfiguration": "development"

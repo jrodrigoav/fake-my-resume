@@ -1,12 +1,12 @@
 ﻿using FakeMyResume.Models;
-using FakeMyResume.Services.Interfaces;
+using FakeMyResume.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FakeMyResume.API.Controllers;
+namespace FakeMyResume.Controllers;
 
 [ApiController, Authorize, Route("api/text")]
-public class TextController(ITextService textService): ControllerBase
+public class TextController(TextService textService) : ControllerBase
 {
     [HttpPost("format")]
     public async Task<ActionResult<string>> ApplyFormatAndSuggestions([FromBody] Message message)

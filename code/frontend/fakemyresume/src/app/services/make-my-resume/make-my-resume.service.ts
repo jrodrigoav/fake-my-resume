@@ -10,7 +10,7 @@ export class MakeMyResumeService {
   baseUrl: string;
 
   constructor(@Inject(ENV_CONFIG) config: IEnvironmentConfig, private httpClient: HttpClient) {
-    this.baseUrl = config.makeMyResumeApiUrl;
+    this.baseUrl = config.apiUrl;
   }
 
   private resourceUrl(resource: string) {

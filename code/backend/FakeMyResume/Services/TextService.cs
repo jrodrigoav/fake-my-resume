@@ -1,10 +1,9 @@
-﻿using FakeMyResume.Services.Interfaces;
-using OpenAI.Interfaces;
+﻿using OpenAI.Interfaces;
 using OpenAI.ObjectModels.RequestModels;
 
 namespace FakeMyResume.Services;
 
-public class TextService(IOpenAIService openAiService) : ITextService
+public class TextService(IOpenAIService openAiService)
 {
     public async Task<string?> GetSuggestions(string text)
     {

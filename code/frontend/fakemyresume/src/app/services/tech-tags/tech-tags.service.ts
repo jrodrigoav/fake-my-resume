@@ -10,7 +10,7 @@ export class TechTagsService {
   private baseUrl: string;
 
   constructor(@Inject(ENV_CONFIG) config: IEnvironmentConfig, private http: HttpClient) {
-    this.baseUrl = config.techTagsUrl.replace(/\/+$/, '');
+    this.baseUrl = config.apiUrl.replace(/\/+$/, '');
   }
 
   searchTechTags(tagName: string): Observable<string[]> {

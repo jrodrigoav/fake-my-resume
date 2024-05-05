@@ -4,6 +4,10 @@
 - MSSQL installed and running or a docker [image for mssql](https://hub.docker.com/_/microsoft-mssql-server)
 
 ## Instructions WEB
+- Create a self-signed certificate at the root of the repository like this
+```
+dotnet dev-certs https -ep ./development_cert.pem --format Pem -np
+```
 - Open folder **code/frontend/fakemyresume**
 - Run **npm install**
 - Run **npm run watch** or **npm run build**

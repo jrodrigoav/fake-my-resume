@@ -1,12 +1,11 @@
-﻿using FakeMyResume.Data;
-using FakeMyResume.Data.Models;
+﻿using FakeMyResume.Models.Data;
 using FakeMyResume.Models.SearchParameters;
-using FakeMyResume.Services.Interfaces;
+using FakeMyResume.Services.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace FakeMyResume.Services;
 
-public class TagService(TagsDbContext context) : ITagService
+public class TagService(FakeMyResumeDbContext context)
 {
     public Task<List<Tag>> GetTags(SearchTagParams search)
     {

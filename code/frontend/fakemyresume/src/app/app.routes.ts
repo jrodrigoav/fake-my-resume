@@ -3,7 +3,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { ResumesComponent } from './pages/resumes/resumes.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
-import { TestUnicornApiComponent } from './pages/test-unicorn-api/test-unicorn-api.component';
 import { MsalGuard } from '@azure/msal-angular';
 import { userGuard } from './guards/user/user.guard';
 import { ResumeFormComponent } from './pages/resumes/resume-form/resume-form.component';
@@ -20,6 +19,5 @@ export const routes: Routes = [
     ]
   },
   { path: 'admin-panel', component: AdminPanelComponent, canActivate: [MsalGuard, userGuard] },
-  { path: 'test', component: TestUnicornApiComponent, canActivate: [MsalGuard, userGuard] },
   { path: '**', component: PageNotFoundComponent },
 ];

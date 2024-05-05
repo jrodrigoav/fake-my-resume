@@ -1,14 +1,13 @@
-﻿using FakeMyResume.Data.Models;
-using FakeMyResume.DTOs;
+﻿using FakeMyResume.DTOs;
 using FakeMyResume.Models.SearchParameters;
-using FakeMyResume.Services.Interfaces;
+using FakeMyResume.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FakeMyResume.API.Controllers;
+namespace FakeMyResume.Controllers;
 
 [ApiController, Authorize, Route("api/tag")]
-public class TagController(ITagService tagService) : ControllerBase
+public class TagController(TagService tagService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> SearchTags([FromQuery] SearchTagParams search)
@@ -23,7 +22,7 @@ public class TagController(ITagService tagService) : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         try
         {
-            var newTags = tags.Select(t => new Tag { Name = t.Name });
+            var newTags = tags.Select(t => new Models.Data.Tag { Name = t.Name });
             var result = await tagService.CreateTags(newTags);
             return Ok(result);
         }

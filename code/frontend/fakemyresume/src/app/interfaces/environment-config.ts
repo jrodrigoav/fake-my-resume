@@ -5,9 +5,6 @@ import { environment } from "../../environments/environment";
 export interface IEnvironmentConfig {
     production: boolean;
     apiUrl: string;
-    unicornRewardsApiUrl: string;
-    makeMyResumeApiUrl: string;
-    techTagsUrl: string;
     msalAuth:{
         clientId: string;
         authority: string;

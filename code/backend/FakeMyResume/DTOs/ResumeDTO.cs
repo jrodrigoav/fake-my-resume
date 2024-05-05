@@ -1,5 +1,4 @@
-﻿using FakeMyResume.Data.Models;
-using System.Text.Json;
+﻿using FakeMyResume.Models.Data;
 
 namespace FakeMyResume.DTOs;
 
@@ -11,9 +10,6 @@ public class ResumeDTO : CreateResumeDTO
 
     public static ResumeDTO FromData(DataResume data)
     {
-        var resume = JsonSerializer.Deserialize<ResumeDTO>(data.JsonData) ?? throw new NullReferenceException("Failed to deserialize resume data.");
-        resume.Id = data.Id;
-        resume.AccountId = data.AccountId;
-        return resume;
+        return new ResumeDTO();
     }
 }
