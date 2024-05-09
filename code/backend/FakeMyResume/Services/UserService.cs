@@ -20,4 +20,20 @@ public class UserService(FakeMyResumeDbContext context)
         await context.SaveChangesAsync();
         return user;
     }
+
+    //public async Task<User> GetUserByUserNameAsync(string userName)
+    //{
+    //    var user = await context.User.FirstAsync(u => u.UserName == userName);
+    //    user.LastActivity = DateTime.UtcNow;
+    //    await context.SaveChangesAsync();
+    //    return user;
+    //}
+    //private readonly FakeMyResumeDbContext _context;
+
+    
+
+    public User GetUserByUserName(string userName)
+    {
+        return context.User.First(x => x.UserName == userName);
+    }
 }

@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AppAny.Quartz.EntityFrameworkCore.Migrations.SQLite" Version="0.5.1" />
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="Betalgo.OpenAI" Version="8.1.1" />
 		<PackageReference Include="Betalgo.OpenAI.Utilities" Version="8.0.1" />
 		<PackageReference Include="itext" Version="8.0.4" />
@@ -23,10 +24,16 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.Identity.Web" Version="2.18.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+		<PackageReference Include="Moq" Version="4.20.70" />
 		<PackageReference Include="Quartz" Version="3.8.1" />
 		<PackageReference Include="Quartz.AspNetCore" Version="3.8.1" />
 		<PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.8.1" />
 		<PackageReference Include="Quartz.Serialization.Json" Version="3.8.1" />
+		<PackageReference Include="xunit" Version="2.8.0" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

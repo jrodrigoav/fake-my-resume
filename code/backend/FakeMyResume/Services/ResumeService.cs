@@ -25,16 +25,25 @@ public class ResumeService
 
     public DataResume SaveResume(Resume resume, string accountId)
     {
-        var dataResume = new DataResume
-        {
-            UserId = accountId,
-            ResumeData = resume,
-            CreatedDate = DateTime.UtcNow,
-            LastUpdated = DateTime.UtcNow
-        };
-        _context.DataResume.Add(dataResume);
-        _context.SaveChanges();
-        return GetResume(dataResume.Id);
+        //try
+        //{
+            var dataResume = new DataResume
+
+            {
+                UserId = accountId,
+                ResumeData = resume,
+                CreatedDate = DateTime.UtcNow,
+                LastUpdated = DateTime.UtcNow
+            };
+            _context.DataResume.Add(dataResume);
+            _context.SaveChanges();
+            return GetResume(dataResume.Id);
+        //}
+        //catch (Exception ex)
+        //{
+        //    Console.WriteLine(ex.ToString());
+        //}
+        //return new DataResume { UserId = accountId, ResumeData = resume };
     }
 
     public DataResume UpdateResume(int id, Resume resume)
