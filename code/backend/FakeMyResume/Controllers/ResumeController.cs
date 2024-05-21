@@ -74,27 +74,17 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
     public  IActionResult SaveResume(CreateResumeDTO resumeDTO)//FIX this
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
+        string accountData = User.FindFirst(ClaimTypes.NameIdentifier).Subject.Name;
 
-        /*
-         // TODO we need to figure out which one we need Claim or user??
-        //depending on the answer for this we need to change the parameter of resumeService.SaveResume() used below
-        var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        */
-        var accountData = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;//object identifer
-
-        User accountId =  userService.GetUserByUserName("tdata");// new Claim("type", "value");//temp force it while we figure out what is its purpose
+        User accountId =  userService.GetUserByUserName(accountData);
         if (accountId == null)
             return new UnauthorizedResult();
 
       
-        Resume resume = GetResumeFromDto(resumeDTO);//TODO use automapper? or what was the idea here? regardless of the answer we need to move code outside of the controller
+        Resume resume = GetResumeFromDto(resumeDTO);
 
         var newResume = resumeService.SaveResume(resume, accountId.Id);
-        // var result = ResumeDTO.FromData(newResume);
-        //return Created($"/api/resume/{newResume.Id}",newResume);
         return Created(string.Empty,null);
-        //return Ok();//TODO which one is the correct return??  OK or created?? if created the url should change otherwise we get an error
      }
 
     WorkExperience GetWorkExperienceFromDto(WorkExperienceDTO workExperienceDTO) {
@@ -147,15 +137,6 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
         resume.Education = GetEducationArray( resumeDTO.Education).ToList<Education>();
 
         return resume;
-        /*
-       var config = new MapperConfiguration(cfg => cfg.CreateMap<Resume, CreateResumeDTO>());
-
-      // var mapper = config.CreateMapper();
-       // or
-       var mapper = new Mapper(config);
-       Resume dto = mapper.Map<CreateResumeDTO>(source: resumeDTO);
-      */
-
     }
 
     [HttpPut("{id}")]
