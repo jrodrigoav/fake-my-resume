@@ -30,7 +30,7 @@ export class MakeMyResumeService {
   }
 
   public saveResume(resume: ResumeDTO) {
-    return this.httpClient.post<ResumeDTO>(this.resourceUrl(''), resume);
+    return this.httpClient.post<ResumeDTO>(this.resourceUrl('resume'), resume);
   }
   
   public updateResume(id: number, resume: ResumeDTO) {

@@ -10,8 +10,8 @@ using System.Security.Claims;
 
 namespace FakeMyResume.Controllers;
 
-//[ApiController, Authorize, Route("api/resume")]
-[ApiController, Route("api/resume")]
+[ApiController, Authorize, Route("api/resume")]
+//[ApiController, Route("api/resume")]
 public class ResumeController(ResumeService resumeService, DocumentGenerationService documentGenerationService,UserService userService) : ControllerBase
 {
     [HttpGet]
@@ -59,6 +59,17 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
         }
     }
 
+    [HttpGet("techs")]
+    public IActionResult GetTechnologies([FromQuery] String text)
+    {
+        List<string> list = new List<string> { "C#", "JAVA", "JS", "VUE", "ANGULAR", "AWS","LUA","GROOVY","JENKINS","PHP","NODE","NEXT","RUST","RUBY","GO","R" };
+
+        var incoming = text.ToUpper();
+        var possibleMatches= list.Where(x=>x.StartsWith(incoming));
+
+        return Ok(possibleMatches);
+    }
+
     [HttpPost]
     public  IActionResult SaveResume(CreateResumeDTO resumeDTO)//FIX this
     {
@@ -68,7 +79,9 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
          // TODO we need to figure out which one we need Claim or user??
         //depending on the answer for this we need to change the parameter of resumeService.SaveResume() used below
         var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
         */
+        var accountData = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;//object identifer
 
         User accountId =  userService.GetUserByUserName("tdata");// new Claim("type", "value");//temp force it while we figure out what is its purpose
         if (accountId == null)
@@ -78,9 +91,10 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
         Resume resume = GetResumeFromDto(resumeDTO);//TODO use automapper? or what was the idea here? regardless of the answer we need to move code outside of the controller
 
         var newResume = resumeService.SaveResume(resume, accountId.Id);
-       // var result = ResumeDTO.FromData(newResume);
+        // var result = ResumeDTO.FromData(newResume);
         //return Created($"/api/resume/{newResume.Id}",newResume);
-        return Ok();//TODO which one is the correct return??  OK or created?? if created the url should change otherwise we get an error
+        return Created(string.Empty,null);
+        //return Ok();//TODO which one is the correct return??  OK or created?? if created the url should change otherwise we get an error
      }
 
     WorkExperience GetWorkExperienceFromDto(WorkExperienceDTO workExperienceDTO) {

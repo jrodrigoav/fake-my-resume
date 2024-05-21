@@ -3,4 +3,6 @@ export class Education {
     major?: string;
     universityName?: string;
     yearOfCompletion?: number;
+    country!: string; 
+    state!: string;
 }

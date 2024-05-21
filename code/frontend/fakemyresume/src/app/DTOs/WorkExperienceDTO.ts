@@ -6,4 +6,5 @@ export class WorkExperience {
     projectName?: string;
     role?: string;
     description?: string;
+    technologies: string[] = [];
 }
