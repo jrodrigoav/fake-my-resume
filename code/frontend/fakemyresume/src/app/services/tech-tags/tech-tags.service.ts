@@ -15,7 +15,6 @@ export class TechTagsService {
 
   searchTechTags(tagName: string): Observable<string[]> {
     const searchParams = { text: tagName };
-    return this.http.get<string[]>(this.baseUrl+"/resume/techs", { params: searchParams });//TODO change this to tag
+    return this.http.get<string[]>(this.baseUrl+"/tag", { params: searchParams });//TODO change this to tag
   }
- 
 }
