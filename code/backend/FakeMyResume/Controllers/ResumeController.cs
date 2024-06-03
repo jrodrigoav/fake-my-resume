@@ -14,14 +14,26 @@ namespace FakeMyResume.Controllers;
 //[ApiController, Route("api/resume")]
 public class ResumeController(ResumeService resumeService, DocumentGenerationService documentGenerationService,UserService userService) : ControllerBase
 {
+    [HttpGet("user")]
+    public IActionResult GetUser()
+    {
+        var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var email = User.Identity.Name;
+        var userInfo = userService.GetUserByUserName(email);
+        return Ok(userInfo);
+    }
+
     [HttpGet]
     public IActionResult GetAccountResumes()
     {
+        var email = User.Identity.Name ;
+        if (email == null) return new UnauthorizedResult();
+        var userInfo=userService.GetUserByUserName(email);
         var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (accountId == null)
             return new UnauthorizedResult();
 
-        var resumes = resumeService.GetResumes(accountId).Select(ResumeDTO.FromData);
+        var resumes = resumeService.GetResumes(userInfo.Id).Select(ResumeDTO.FromData);
         return Ok(resumes);
     }
 
