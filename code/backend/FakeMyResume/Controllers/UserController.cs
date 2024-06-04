@@ -12,7 +12,7 @@ namespace FakeMyResume.Controllers
         public UserController( UserService userService) {
             _userService = userService;
         }
-        [HttpGet()]
+        [HttpGet("current")]
         public IActionResult GetUser()
         {
             var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

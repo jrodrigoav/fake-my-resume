@@ -26,7 +26,7 @@ export class UserService {
   }
 
   public loadCurrentUser() {
-      this.httpClient.get<User>(`${this.baseUrl}`, { observe: 'response' }).subscribe((response) => {
+      this.httpClient.get<User>(this.resourceUrl('current'), { observe: 'response' }).subscribe((response) => {
       if(response.status >= 200 && response.status <= 299) {
         this._currentUser.next(response.body);
       } else {
