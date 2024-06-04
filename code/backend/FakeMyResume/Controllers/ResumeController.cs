@@ -11,17 +11,9 @@ using System.Security.Claims;
 namespace FakeMyResume.Controllers;
 
 [ApiController, Authorize, Route("api/resume")]
-//[ApiController, Route("api/resume")]
 public class ResumeController(ResumeService resumeService, DocumentGenerationService documentGenerationService,UserService userService) : ControllerBase
 {
-    [HttpGet("user")]
-    public IActionResult GetUser()
-    {
-        var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var email = User.Identity.Name;
-        var userInfo = userService.GetUserByUserName(email);
-        return Ok(userInfo);
-    }
+
 
     [HttpGet]
     public IActionResult GetAccountResumes()
@@ -83,7 +75,7 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
     }
 
     [HttpPost]
-    public  IActionResult SaveResume(CreateResumeDTO resumeDTO)//FIX this
+    public  IActionResult SaveResume(CreateResumeDTO resumeDTO)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         string accountData = User.FindFirst(ClaimTypes.NameIdentifier).Subject.Name;
