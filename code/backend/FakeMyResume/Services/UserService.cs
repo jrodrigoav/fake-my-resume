@@ -20,6 +20,7 @@ public class UserService(FakeMyResumeDbContext context)
 
     public async Task<User> CreateUserAsync(User user)
     {
+        if(string.IsNullOrEmpty( user.Id)) user.Id = Guid.NewGuid().ToString();
         context.User.Add(user);
         await context.SaveChangesAsync();
         return user;
@@ -38,6 +39,6 @@ public class UserService(FakeMyResumeDbContext context)
 
     public User GetUserByUserName(string userName)
     {
-        return context.User.First(x => x.UserName == userName);
+        return context.User.FirstOrDefault(x => x.UserName == userName);
     }
 }
