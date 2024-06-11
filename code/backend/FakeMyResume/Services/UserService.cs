@@ -1,15 +1,24 @@
 ﻿using FakeMyResume.Models.Data;
 using FakeMyResume.Services.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace FakeMyResume.Services;
 
 public class UserService(FakeMyResumeDbContext context) 
 {
-   
+    public async Task<User> GetUserByUserNameAsync(string? userName)
+    {
+        var user = await context.User.FirstOrDefaultAsync(u => u.UserName == userName);
+        if (string.IsNullOrWhiteSpace(userName) || user == null)
+        {
+            user = new User() { Id = Guid.NewGuid().ToString(), UserName = userName, LastActivity = DateTime.UtcNow };
+            context.Add(user);
+        }
+        user.LastActivity = DateTime.UtcNow;
+        await context.SaveChangesAsync();
+        return user;
+    }
+
     public async Task<User> GetUserByIdAsync(string id)
     {
         var user = await context.User.FirstAsync(u => u.Id == id);
@@ -25,17 +34,6 @@ public class UserService(FakeMyResumeDbContext context)
         await context.SaveChangesAsync();
         return user;
     }
-
-    //public async Task<User> GetUserByUserNameAsync(string userName)
-    //{
-    //    var user = await context.User.FirstAsync(u => u.UserName == userName);
-    //    user.LastActivity = DateTime.UtcNow;
-    //    await context.SaveChangesAsync();
-    //    return user;
-    //}
-    //private readonly FakeMyResumeDbContext _context;
-
-    
 
     public User GetUserByUserName(string userName)
     {

@@ -1,11 +1,8 @@
-using AutoMapper;
 using FakeMyResume.DTOs;
 using FakeMyResume.Models;
-using FakeMyResume.Models.Data;
 using FakeMyResume.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OpenAI.ObjectModels.ResponseModels;
 using System.Security.Claims;
 
 namespace FakeMyResume.Controllers;
@@ -63,33 +60,18 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
         }
     }
 
-    [HttpGet("techs")]
-    public IActionResult GetTechnologies([FromQuery] String text)
-    {
-        List<string> list = new List<string> { "C#", "JAVA", "JS", "VUE", "ANGULAR", "AWS","LUA","GROOVY","JENKINS","PHP","NODE","NEXT","RUST","RUBY","GO","R" };
-
-        var incoming = text.ToUpper();
-        var possibleMatches= list.Where(x=>x.StartsWith(incoming));
-
-        return Ok(possibleMatches);
-    }
 
     [HttpPost]
-    public  IActionResult SaveResume(CreateResumeDTO resumeDTO)
+    public async Task<IActionResult> SaveResumeAsync(CreateResumeDTO resumeDTO)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        string accountData = User.FindFirst(ClaimTypes.NameIdentifier).Subject.Name;
-
-        User accountId =  userService.GetUserByUserName(accountData);
-        if (accountId == null)
-            return new UnauthorizedResult();
-
-      
+        if ( !(User.Identity.IsAuthenticated && !string.IsNullOrEmpty(User.Identity.Name))) return new UnauthorizedResult();
+        var accountId = userService.GetUserByUserNameAsync(User.Identity.Name).Result;
         Resume resume = GetResumeFromDto(resumeDTO);
-
         var newResume = resumeService.SaveResume(resume, accountId.Id);
-        return Created(string.Empty,null);
-     }
+        return Created(string.Empty, null);
+    }
+
 
     WorkExperience GetWorkExperienceFromDto(WorkExperienceDTO workExperienceDTO) {
         WorkExperience workExperience = new();
