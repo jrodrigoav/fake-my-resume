@@ -84,6 +84,7 @@ export class ResumeFormComponent implements OnDestroy {
     this.resumeService.saveResume(this.resume).subscribe(resume => {
       this.setResume(resume);
     });
+    this.router.navigate(["resumes"]);
   }
 
   update(): void {

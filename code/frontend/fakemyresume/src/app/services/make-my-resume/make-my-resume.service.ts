@@ -18,7 +18,7 @@ export class MakeMyResumeService {
   }
 
   public getResumes() {
-    return this.httpClient.get<ResumeDTO[]>(this.resourceUrl(''));
+    return this.httpClient.get<ResumeDTO[]>(this.resourceUrl("resume"));
   }
 
   public getResume(id: string) {
@@ -26,7 +26,7 @@ export class MakeMyResumeService {
   }
 
   public getResumePdF(resumeId: number) {
-    return this.httpClient.get<Blob>(this.resourceUrl(`${resumeId}/pdf`), { responseType: 'blob' as 'json' });
+    return this.httpClient.get<Blob>(this.resourceUrl(`resume/${resumeId}/pdf`), { responseType: 'blob' as 'json' });
   }
 
   public saveResume(resume: ResumeDTO) {

@@ -14,7 +14,7 @@ import { SuggestionsDialogComponent } from './suggestions-dialog/suggestions-dia
 export class TextFormatButtonComponent {
   @Input() value?: string;
   @Input() label: string = "Review format and suggestions";
-  busy: boolean = false;
+  busy: boolean = true;
 
   constructor(private readonly textService: TextService, public dialog: MatDialog) {
     
