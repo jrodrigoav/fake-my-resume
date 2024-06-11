@@ -16,10 +16,7 @@ namespace FakeMyResume.Controllers
         public async Task<IActionResult> GetUserAsync()
         {
             if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(User.Identity.Name))
-            {
-                var usr=  _userService.GetUserByUserNameAsync(User.Identity.Name).Result;
-                return Ok(usr);
-            }
+                return Ok(new User() {  UserName = User.Identity.Name});
             return new UnauthorizedResult();
         }
     }
