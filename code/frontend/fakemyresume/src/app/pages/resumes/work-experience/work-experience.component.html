@@ -32,7 +32,7 @@
         </div>
         <mat-form-field class="full-width">
             <input matInput [matDatepicker]="pickerBegin" formControlName="dateBegin">
-            <mat-hint>YYYY/MM/DD</mat-hint>
+            <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="pickerBegin"></mat-datepicker-toggle>
             <mat-datepicker #pickerBegin startView="multi-year" 
               (monthSelected)="chosenMonthHandler('dateBegin',$event, pickerBegin)">
@@ -41,7 +41,7 @@
 
         <mat-form-field class="full-width">
             <input matInput [matDatepicker]="pickerEnd" formControlName="dateEnd">
-            <mat-hint>YYYY/MM/DD</mat-hint>
+            <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
             <mat-datepicker #pickerEnd startView="multi-year" 
               (monthSelected)="chosenMonthHandler('dateEnd',$event, pickerEnd)">
