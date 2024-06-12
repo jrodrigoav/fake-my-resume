@@ -29,7 +29,11 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
     [HttpGet("{id}")]
     public IActionResult GetResume(int id)
     {
-        var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var email = User.Identity.Name;
+        if (email == null) return new UnauthorizedResult();
+        var userInfo = userService.GetUserByUserName(email);
+
         var resume = resumeService.GetResume(id);
 
         if (resume == null)
@@ -37,7 +41,7 @@ public class ResumeController(ResumeService resumeService, DocumentGenerationSer
             return NotFound();
         }
 
-        if (!resume.UserId.Equals(accountId))
+        if (!resume.UserId.Equals(userInfo.Id))
         {
             return Unauthorized($"The requested resume belongs to another user.");
         }
