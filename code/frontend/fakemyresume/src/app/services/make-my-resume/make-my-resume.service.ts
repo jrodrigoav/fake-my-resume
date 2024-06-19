@@ -34,6 +34,6 @@ export class MakeMyResumeService {
   }
   
   public updateResume(id: number, resume: ResumeDTO) {
-    return this.httpClient.put(this.resourceUrl(`${id}`), resume, { observe: "response" });
+    return this.httpClient.put(this.resourceUrl(`resume/${id}`), resume, { observe: "response" });
   }
 }
