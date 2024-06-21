@@ -143,7 +143,7 @@ public class DocumentGenerationService
     {
         var rectangle = new Rectangle(35, page.GetPageSize().GetTop(), 740, 150);
         var canvasTextRectangle = new Canvas(page, rectangle);
-        var fullName = new Text(resumeFullName.ToUpperInvariant()).SetFont(font);
+        var fullName = new Text(resumeFullName.ToUpperInvariant()).SetFont(font).SetFontSize(21);
         var currentRole = new Text(resumeCurrentRole).SetFont(font);
 
         canvasTextRectangle.ShowTextAligned(new Paragraph(fullName).SetFontSize(36).SetFontColor(ColorConstants.BLACK), 35, 790, TextAlignment.LEFT)

@@ -8,5 +8,5 @@ public class User
 
     public DateTime LastActivity { get; set; } = DateTime.UtcNow;
 
-    public DataResume[] Resumes { get; set; } = [];
+    public List<DataResume> Resumes { get; set; } = [];
 }

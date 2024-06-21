@@ -25,13 +25,14 @@ export class ResumeFormComponent implements OnDestroy {
   workExperienceForm: FormGroup;
   educationForm: FormGroup;
   onDestroy$: Subject<void> = new Subject();
+  
 
   constructor(private resumeService: MakeMyResumeService, private fb: FormBuilder, private router: Router, route: ActivatedRoute) {
     this.resumeForm = this.fb.group({
       fullName: new FormControl('', [Validators.required]),
       currentRole: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      certifications: this.fb.array([]),
+      certifications: new FormArray([]),
     });
 
     this.workExperienceForm = this.fb.group({
@@ -41,7 +42,7 @@ export class ResumeFormComponent implements OnDestroy {
       description: new FormControl('', [Validators.required]),
       dateBegin: new FormControl(new Date(), [Validators.required]),
       dateEnd: new FormControl(new Date(), [Validators.required]),
-      technologies: this.fb.array([]),
+      technologies:new FormArray([]), 
     });
 
     this.educationForm = this.fb.group({
@@ -59,6 +60,7 @@ export class ResumeFormComponent implements OnDestroy {
     } else if(resumeId) {
       this.resumeService.getResume(resumeId).subscribe(resume => {
         this.resume = resume;
+        this.resume.certifications=resume.certifications;
         this.setResume(this.resume);
       });
     }
@@ -77,10 +79,12 @@ export class ResumeFormComponent implements OnDestroy {
     this.resume = {
       ...this.resume,
       ...this.resumeForm.getRawValue(),
+      
     }
     this.resumeService.saveResume(this.resume).subscribe(resume => {
       this.setResume(resume);
     });
+    this.router.navigate(["resumes"]);
   }
 
   update(): void {
@@ -106,6 +110,7 @@ export class ResumeFormComponent implements OnDestroy {
     });
   }
 
+  
   private setResume(resume: ResumeDTO) {
     (this.resumeForm.controls['certifications'] as FormArray).controls = resume.certifications.map(v => new FormControl());
     this.resumeForm.patchValue(resume);

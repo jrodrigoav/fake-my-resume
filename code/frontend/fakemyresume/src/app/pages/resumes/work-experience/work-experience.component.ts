@@ -48,7 +48,9 @@ export class WorkExperienceComponent implements OnInit {
 
   addExperience() {
     if (this.workExperienceForm.valid) {
+
       const experience: WorkExperience = this.workExperienceForm.value;
+      const technology: string[] = this.technologiesControl.value;
       this.resume.workExperience = [...this.resume.workExperience, experience];
       this.workExperienceForm.reset();
       this.technologiesControl.clear();

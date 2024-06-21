@@ -42,7 +42,7 @@ export class ResumesComponent {
     this.resumeService.getResumePdF(resume.id).subscribe(response => {
       let downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(response);
-      downloadLink.setAttribute('download', `${resume.fullName} Resume.pdf`);
+      downloadLink.setAttribute('download', `resume_unosquare.pdf`);
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);

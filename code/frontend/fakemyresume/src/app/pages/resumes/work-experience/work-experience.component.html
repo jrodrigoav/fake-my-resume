@@ -32,6 +32,7 @@
         </div>
         <mat-form-field class="full-width">
             <input matInput [matDatepicker]="pickerBegin" formControlName="dateBegin">
+            <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="pickerBegin"></mat-datepicker-toggle>
             <mat-datepicker #pickerBegin startView="multi-year" 
               (monthSelected)="chosenMonthHandler('dateBegin',$event, pickerBegin)">
@@ -40,6 +41,7 @@
 
         <mat-form-field class="full-width">
             <input matInput [matDatepicker]="pickerEnd" formControlName="dateEnd">
+            <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
             <mat-datepicker #pickerEnd startView="multi-year" 
               (monthSelected)="chosenMonthHandler('dateEnd',$event, pickerEnd)">
@@ -83,11 +85,11 @@
             </ng-container>
             <ng-container matColumnDef="from">
                 <th mat-header-cell *matHeaderCellDef> Fecha Inicio</th>
-                <td mat-cell *matCellDef="let element"> {{element.dateBegin | date: 'MMM y'}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.dateBegin | date: 'YYYY-MM-DD'}} </td>
               </ng-container>
               <ng-container matColumnDef="to">
                 <th mat-header-cell *matHeaderCellDef> Fecha Fin </th>
-                <td mat-cell *matCellDef="let element"> {{element.dateEnd | date: 'MMM y'}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.dateEnd | date: 'YYYY-MM-DD'}} </td>
               </ng-container>
               <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef></th>

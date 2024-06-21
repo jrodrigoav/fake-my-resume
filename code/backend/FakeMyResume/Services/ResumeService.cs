@@ -23,18 +23,19 @@ public class ResumeService
         return _context.DataResume.Where(resume => resume.UserId.Equals(userId));
     }
 
-    public DataResume SaveResume(Resume resume, string accountId)
+    public DataResume SaveResume(Resume resume, string userId)
     {
-        var dataResume = new DataResume
-        {
-            UserId = accountId,
-            ResumeData = resume,
-            CreatedDate = DateTime.UtcNow,
-            LastUpdated = DateTime.UtcNow
-        };
-        _context.DataResume.Add(dataResume);
-        _context.SaveChanges();
-        return GetResume(dataResume.Id);
+            var dataResume = new DataResume
+
+            {
+                UserId = userId,
+                ResumeData = resume,
+                CreatedDate = DateTime.UtcNow,
+                LastUpdated = DateTime.UtcNow
+            };
+            _context.DataResume.Add(dataResume);
+            _context.SaveChanges();
+            return GetResume(dataResume.Id);
     }
 
     public DataResume UpdateResume(int id, Resume resume)

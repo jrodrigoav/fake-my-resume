@@ -20,8 +20,6 @@ export class AppComponent {
   title = 'fakemyresume';
   pageLinks = [
     { label: 'Home', route: '/home' },
-    { label: 'My Resumes', route: '/resumes' },
-    { label: 'Admin Panel', route: '/admin-panel' },
   ];
 
   loggedIn = new Subject<boolean>();
