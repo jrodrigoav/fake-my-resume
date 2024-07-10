@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ENV_CONFIG, IEnvironmentConfig } from '../../interfaces/environment-config';
 import { ResumeDTO } from '../../DTOs/ResumeDTO';
+import { Observable } from 'rxjs/internal/Observable';
+import { INote } from '../../interfaces/inote';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +34,24 @@ export class MakeMyResumeService {
   public saveResume(resume: ResumeDTO) {
     return this.httpClient.post<ResumeDTO>(this.resourceUrl('resume'), resume);
   }
-  
+
   public updateResume(id: number, resume: ResumeDTO) {
     return this.httpClient.put(this.resourceUrl(`resume/${id}`), resume, { observe: "response" });
+  }
+
+  public fetchNotes(): Observable<INote[]> {
+    return this.httpClient.get<INote[]>(this.resourceUrl("notes"));
+  }
+
+  public createNote(note: INote): Observable<INote> {
+    return this.httpClient.post<INote>(this.resourceUrl("notes"), note);
+  }
+
+  public updateNote(note: INote) {
+    return this.httpClient.put(this.resourceUrl("notes"), note);
+  }
+
+  public deleteNote(note: INote) {
+    return this.httpClient.delete(this.resourceUrl("notes"), { body: note });
   }
 }

@@ -370,3 +370,5 @@ package-lock.json
 fake-my-resume.sqlite
 development_cert.key
 development_cert.pem
+fake-my-resume.sqlite-shm
+fake-my-resume.sqlite-wal

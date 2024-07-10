@@ -7,7 +7,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MsalBroadcastService, MsalModule, MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventType } from '@azure/msal-browser';
 import { HeaderComponent } from './layout/header/header.component';
-import { UserService } from './services/user/user.service';
 
 @Component({
   selector: 'app-root',
@@ -16,18 +15,15 @@ import { UserService } from './services/user/user.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'fakemyresume';
+export class AppComponent { 
   pageLinks = [
     { label: 'Home', route: '/home' },
   ];
 
   loggedIn = new Subject<boolean>();
 
-  constructor(private authService: MsalService, private msalBroadcastService: MsalBroadcastService, private userService: UserService) {
-    this.loggedIn.pipe(filter(state => state === true)).subscribe((_) => {
-      this.userService.loadCurrentUser();
-    });
+  constructor(private authService: MsalService, private msalBroadcastService: MsalBroadcastService) {
+    
     this.authService.initialize().subscribe(() => {
       this.onAuthInitialize();
     });

@@ -1,0 +1,27 @@
+<button type="button" mat-icon-button aria-label="Add new note" (click)="addNote()">
+    <mat-icon aria-hidden="false" aria-label="Add note" fontIcon="add"></mat-icon>
+</button>
+<mat-grid-list cols="3" rowHeight="2:1" gutterSize="10">
+    @for(n of notes; track n.createdAt; let idx = $index;) {
+    <mat-grid-tile>
+        <mat-card>
+            <form (submit)="saveNote($event,idx)">
+                <mat-form-field>
+                    <mat-label>Title</mat-label>
+                    <input matInput placeholder="Title" name="Title" [(ngModel)]="n.title" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Content</mat-label>
+                    <textarea matInput placeholder="Content" name="Content" [(ngModel)]="n.content" required></textarea>
+                </mat-form-field>
+                <button type="submit" mat-icon-button aria-label="Save note">
+                    <mat-icon aria-hidden="false" aria-label="Save note" fontIcon="save"></mat-icon>
+                </button>
+                <button type="button" mat-icon-button aria-label="Delete note" (click)="deleteNote($event, idx)">
+                    <mat-icon aria-hidden="false" aria-label="Delete note" fontIcon="delete"></mat-icon>
+                </button>
+            </form>
+        </mat-card>
+    </mat-grid-tile>
+    }
+</mat-grid-list>

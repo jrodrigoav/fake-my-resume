@@ -13,6 +13,8 @@ namespace FakeMyResume.Services.Data
 
         public DbSet<User> User { get; set; }
 
+        public DbSet<Note> Notes { get; set; }
+
         public FakeMyResumeDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -42,6 +44,8 @@ namespace FakeMyResume.Services.Data
                 //ownedNavigationBuilder.OwnsMany(dr => dr.Certifications);
                 
             });
+
+            modelBuilder.Entity<Note>().HasKey(n => new { n.UserId, n.CreatedAt });
         }
 
         public async Task UpsertTagsFromSourceAsync(Models.StackExchange.Tag[] sourceTags)
