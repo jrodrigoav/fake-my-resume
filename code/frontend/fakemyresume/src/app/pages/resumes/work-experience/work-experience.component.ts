@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { TechTagsService } from '../../../services/tech-tags/tech-tags.service';
+import { MakeMyResumeService } from '../../../services/make-my-resume/make-my-resume.service';
 import { ChipMultiselectComponent } from '../../../components/chip-multiselect/chip-multiselect.component';
 import { ResumeDTO } from '../../../DTOs/ResumeDTO';
 import { WorkExperience } from '../../../DTOs/WorkExperienceDTO';
@@ -32,12 +32,12 @@ export class WorkExperienceComponent implements OnInit {
   technologiesControl!: FormArray;
   dragDisabled: boolean = true;
   
-  constructor(private cd: ChangeDetectorRef, private techTagsService: TechTagsService) {
+  constructor(private cd: ChangeDetectorRef, private makeMyResume: MakeMyResumeService) {
     this.filteredTechs = this.inputChanges.pipe(
       debounceTime(300),
       switchMap(value => {
         if(!value?.trim()) return of([]);
-        return this.techTagsService.searchTechTags(value);
+        return this.makeMyResume.searchTechTags(value);
       })
     );
   }

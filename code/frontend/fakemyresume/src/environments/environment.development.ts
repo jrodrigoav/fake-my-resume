@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: true,
-    apiUrl: "https://fakemyresume20240711.azurewebsites.net/api",
+    production: false,
+    apiUrl: "https://localhost:7121/api",
     msalAuth:{
         clientId: "4186cd96-2142-430d-bfd3-2ff7b64a2c05",
         authority: "https://login.microsoftonline.com/eedd1340-df1a-4db2-8a03-b4cfb1fa3e9d",

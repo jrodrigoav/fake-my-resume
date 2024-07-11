@@ -1,0 +1,8 @@
+code/frontend/fakemyresume/.angular/
+code/frontend/fakemyresume/.vscode/
+code/frontend/fakemyresume/node_modules/
+code/frontend/fakemyresume/package-lock.json
+code/backend/FakeMyResume/bin/
+code/backend/FakeMyResume/obj/
+code/backend/.vs/
+code/backend/FakeMyResume/wwwroot/

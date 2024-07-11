@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ENV_CONFIG, IEnvironmentConfig } from '../../interfaces/environment-config';
 import { ResumeDTO } from '../../DTOs/ResumeDTO';
 import { Observable } from 'rxjs/internal/Observable';
 import { INote } from '../../interfaces/inote';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ import { INote } from '../../interfaces/inote';
 export class MakeMyResumeService {
   baseUrl: string;
 
-  constructor(@Inject(ENV_CONFIG) config: IEnvironmentConfig, private httpClient: HttpClient) {
-    this.baseUrl = config.apiUrl;
+  constructor(private httpClient: HttpClient) {
+    this.baseUrl = environment.apiUrl;
   }
 
   private resourceUrl(resource: string) {
@@ -53,5 +53,14 @@ export class MakeMyResumeService {
 
   public deleteNote(note: INote) {
     return this.httpClient.delete(this.resourceUrl("notes"), { body: note });
+  }
+
+  searchTechTags(tagName: string): Observable<string[]> {
+    const searchParams = { text: tagName };
+    return this.httpClient.get<string[]>(this.resourceUrl("tag"), { params: searchParams });//TODO change this to tag
+  }
+
+  checkFormatAndSuggestions(value: string) {
+    return this.httpClient.post<string>(this.resourceUrl('text/format'), { value });
   }
 }

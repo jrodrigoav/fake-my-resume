@@ -20,13 +20,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<TagService>();
     builder.Services.AddScoped<UserService>();
     builder.Services.AddScoped<TextService>();
-
+    
     builder.Services.AddQuartz(q =>
     {        
         q.UsePersistentStore(c =>
         {            
             c.UseNewtonsoftJsonSerializer();
-            c.UseMicrosoftSQLite(builder.Configuration.GetConnectionString("FakeMyResumeDB")!);
+            c.UseMicrosoftSQLite(builder.Configuration.GetConnectionString("FakeMyResumeDB")!);            
         });
         var jobKey = new JobKey("TagImporterService");
         q.AddJob<ImporterService>(opts => opts.WithIdentity(jobKey).DisallowConcurrentExecution(true).RequestRecovery(false));
@@ -34,7 +34,7 @@ var builder = WebApplication.CreateBuilder(args);
     });
     
     builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-    
+
     builder.Services.AddHttpClient<ImporterService>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
     {
         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate

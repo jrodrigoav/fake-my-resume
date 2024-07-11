@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { TextService } from '../../services/text/text.service';
+
 import { MatDialog } from '@angular/material/dialog';
 import { SuggestionsDialogComponent } from './suggestions-dialog/suggestions-dialog.component';
+import { MakeMyResumeService } from '../../services/make-my-resume/make-my-resume.service';
 
 @Component({
   selector: 'app-text-format-button',
@@ -16,14 +17,14 @@ export class TextFormatButtonComponent {
   @Input() label: string = "Review format and suggestions";
   busy: boolean = true;
 
-  constructor(private readonly textService: TextService, public dialog: MatDialog) {
+  constructor(private readonly makeMyResume: MakeMyResumeService, public dialog: MatDialog) {
     
   }
 
   async formatText(value: string) {
     if(this.busy) return;
     this.busy = true;
-    this.textService.checkFormatAndSuggestions(value).subscribe({
+    this.makeMyResume.checkFormatAndSuggestions(value).subscribe({
       next: (suggestedChange) => {
         if(!suggestedChange) {
           suggestedChange = "Couldn't get any format changes or suggestions.";
