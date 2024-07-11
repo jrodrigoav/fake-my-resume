@@ -49,8 +49,7 @@ export class NotesComponent implements OnInit {
         this.notes[index].isDraft = false;
       });
     }
-
-    if (newNote.isDraft === false) {      
+    else {      
       this.makeMyResume.updateNote(newNote).subscribe();      
     }
   }
