@@ -52,7 +52,7 @@ var builder = WebApplication.CreateBuilder(args);
             {
                 policy.AllowAnyMethod();
                 policy.WithHeaders("Authorization", "Accept", "Referer", "User-Agent", "Content-Type");
-                policy.WithOrigins("https://localhost:7121");
+                policy.WithOrigins("https://localhost:7121", "https://fakemyresume20240711.azurewebsites.net/");
             });
     });
     builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration, "AzureAd");
